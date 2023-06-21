@@ -1,5 +1,19 @@
 def get_params(model_name):
     
+    """
+    
+    This function gets a semantic segmentation model name and returns parameters to initialize the model.
+    
+    Parameter:
+    
+        model_name     - a model name of the semantic segmentation model to be initialized, str.
+        
+    Output:
+    
+        out           - parameters of the model, dict.
+    
+    """
+    
     return {"in_chs":      3,
             "out_chs":    32,
              "n_cls":      2,
