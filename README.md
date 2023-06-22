@@ -28,4 +28,6 @@
 
 **[SegFormer](https://arxiv.org/abs/2105.15203)**
 
+![drone_segformer_preds](https://github.com/bekhzod-olimov/Semantic-Segmentation-Projects/assets/50166164/99375aa1-34aa-4bad-b37e-ce6bedcf2218)
+
 
