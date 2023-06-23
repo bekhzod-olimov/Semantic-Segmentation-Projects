@@ -8,7 +8,7 @@ This repository contains sample semantic segmentation projects using open source
 ```python
 conda env create -f environment.yml
 ```
-Then activate the environment using the following command:
+* Activate the environment using the following command:
 ```python
 conda activate speed
 ```
