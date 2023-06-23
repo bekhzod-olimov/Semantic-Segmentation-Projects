@@ -1,5 +1,8 @@
 # Semantic-Segmentation-Projects
 
+This repository contains sample semantic segmentation projects using open source datasets and [PyTorch Lightning Library](https://www.pytorchlightning.ai/index.html)
+
+
 ## [Flood Area Segmentation Dataset](https://www.kaggle.com/datasets/faizalkarim/flood-area-segmentation)
 
 **[UNet](https://arxiv.org/abs/1505.04597)**
