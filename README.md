@@ -19,6 +19,12 @@ conda activate speed
 python main.py --dataset_name drone --model_name unet --devices 4 --epochs 50
 ```
 
+## Inference
+* Run inference script
+```python
+python inference.py --dataset_name drone --model_name unet
+```
+
 ## Inference Results
 * [Flood Area Segmentation Dataset](https://www.kaggle.com/datasets/faizalkarim/flood-area-segmentation)
 
