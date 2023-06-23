@@ -1,7 +1,17 @@
 # Semantic-Segmentation-Projects
 
-This repository contains sample semantic segmentation projects using open source datasets and [PyTorch Lightning Library](https://www.pytorchlightning.ai/index.html)
+This repository contains sample semantic segmentation projects using open source datasets and [PyTorch Lightning library](https://www.pytorchlightning.ai/index.html).
 
+## Dependencies
+
+* Create conda environment from yml file using the following script:
+```python
+conda env create -f environment.yml
+```
+Then activate the environment using the following command:
+```python
+conda activate speed
+```
 
 ## [Flood Area Segmentation Dataset](https://www.kaggle.com/datasets/faizalkarim/flood-area-segmentation)
 
