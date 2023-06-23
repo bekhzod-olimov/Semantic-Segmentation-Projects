@@ -13,7 +13,14 @@ conda env create -f environment.yml
 conda activate speed
 ```
 
-## [Flood Area Segmentation Dataset](https://www.kaggle.com/datasets/faizalkarim/flood-area-segmentation)
+## Train
+* Run train script
+```python
+python main.py --dataset_name drone --model_name unet --devices 4 --epochs 50
+```
+
+## Inference Results
+* [Flood Area Segmentation Dataset](https://www.kaggle.com/datasets/faizalkarim/flood-area-segmentation)
 
 **[UNet](https://arxiv.org/abs/1505.04597)**
 
@@ -23,7 +30,7 @@ conda activate speed
 
 ![flood_segformer_preds](https://github.com/bekhzod-olimov/Semantic-Segmentation-Projects/assets/50166164/007053a7-2e69-4f6d-bacc-52ee362475c3)
 
-## [Cells Segmentation Dataset](https://drive.google.com/file/d/1c4oON03uBSxcGlluBFHTtkhFibUPSWs7/view)
+* [Cells Segmentation Dataset](https://drive.google.com/file/d/1c4oON03uBSxcGlluBFHTtkhFibUPSWs7/view)
 
 **[UNet](https://arxiv.org/abs/1505.04597)**
 
@@ -33,7 +40,7 @@ conda activate speed
 
 ![cells_segformer_preds](https://github.com/bekhzod-olimov/Semantic-Segmentation-Projects/assets/50166164/8bcc583d-22cf-4733-bb0b-3a3080e1ff55)
 
-## [Aerial Semantic Segmentation Drone Dataset](https://www.kaggle.com/datasets/bulentsiyah/semantic-drone-dataset)
+* [Aerial Semantic Segmentation Drone Dataset](https://www.kaggle.com/datasets/bulentsiyah/semantic-drone-dataset)
 
 **[UNet](https://arxiv.org/abs/1505.04597)**
 
