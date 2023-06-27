@@ -9,6 +9,22 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 torch.manual_seed(2023)
 
 class CustomSegmentationDataset(Dataset):
+
+    """
+    
+    This class gets several parameters and returns custom segmentation dataset.
+
+    Parameters:
+
+        ds_name          - name of the dataset, str;
+        transformations  - image transformations to be applied, albumentations object;
+        im_files         - valid image file extensions, list -> str.
+
+    Output:
+
+        ds               - dataset with the images from the root, torch dataset object.
+    
+    """
         
     # Initialization
     def __init__(self, ds_name, transformations = None, im_files = [".jpg", ".png", ".jpeg"]):
