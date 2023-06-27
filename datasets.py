@@ -29,14 +29,20 @@ class CustomSegmentationDataset(Dataset):
     # Initialization
     def __init__(self, ds_name, transformations = None, im_files = [".jpg", ".png", ".jpeg"]):
 
+        # Get parameter arguments
         self.transformations = transformations
+        # Set the function to switch to tensor
         self.tensorize = tfs.Compose([tfs.ToTensor()]) 
         
+        # Set the root path based on the dataset name
         root = "/home/ubuntu/workspace/dataset/bekhzod/sem_segmentation/cells" if ds_name == "cells" else ("/home/ubuntu/workspace/dataset/bekhzod/sem_segmentation/flood" if ds_name == "flood" else "/home/ubuntu/workspace/dataset/bekhzod/sem_segmentation/drone")
+        # Set the threshold based on the dataset name
         self.threshold = 11 if ds_name == "drone" else 128
-        self.im_paths = sorted(glob(f"{root}/images/*[{im_file for im_file in im_files}]"))
-        self.gt_paths = sorted(glob(f"{root}/masks/*[{im_file for im_file in im_files}]"))
+        
+        # Get images and gts paths
+        self.im_paths = sorted(glob(f"{root}/images/*[{im_file for im_file in im_files}]")); self.gt_paths = sorted(glob(f"{root}/masks/*[{im_file for im_file in im_files}]"))
     
+    # Set the length of the dataset
     def __len__(self): return len(self.im_paths)
 
     def __getitem__(self, idx):
