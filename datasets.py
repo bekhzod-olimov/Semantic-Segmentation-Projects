@@ -47,13 +47,30 @@ class CustomSegmentationDataset(Dataset):
 
     def __getitem__(self, idx):
 
+    """
+
+    This function gets an index and returns an image and gt pair.
+
+    Parameter:
+
+        idx    - index of the data in the dataset, int.
+
+    Outputs:
+
+        im     - an image, tensor;
+        gt     - gt mask of the image, tensor.
+    
+    """
+        # Read an image and its corresponding mask
         im, gt = cv2.cvtColor(cv2.imread(self.im_paths[idx]), cv2.COLOR_BGR2RGB), cv2.cvtColor(cv2.imread(self.gt_paths[idx]), cv2.COLOR_BGR2GRAY)
+        # Apply transformations to the image and gt mask
         if self.transformations is not None: 
+            # Get transformed transformations object (dictionary)
             transformed = self.transformations(image = im, mask = gt)
-            im, gt = transformed['image'], transformed['mask']
+            # Get the transformed image and mask
+            im, gt = transformed["image"], transformed["mask"]
             
         return self.tensorize(im), torch.tensor(gt > self.threshold).long()
-    
     
 def get_dl(ds_name, transformations, bs, split = [0.7, 0.15, 0.15]):
         
