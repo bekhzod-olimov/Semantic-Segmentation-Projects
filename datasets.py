@@ -73,6 +73,25 @@ class CustomSegmentationDataset(Dataset):
         return self.tensorize(im), torch.tensor(gt > self.threshold).long()
     
 def get_dl(ds_name, transformations, bs, split = [0.7, 0.15, 0.15]):
+
+    """
+
+    This function gets several arguments and return dataloaders.
+
+    Parameters:
+
+        ds_name           - name of the dataset, str;
+        transformations   - transforms to be applied, albumentations object;
+        bs                - mini batch size, int;
+        split             - size to split the dataset, list -> float.
+
+    Outputs:
+
+        tr_dl             - train dataloader, torch dataloader object;
+        val_dl            - validation dataloader, torch dataloader object;
+        test_dl           - test dataloader, torch dataloader object. 
+   
+    """
         
     assert sum(split) == 1., "Data split listdagi elementlar yig'indisi 1ga teng bo'lishi kerak"
     
