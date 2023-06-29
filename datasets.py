@@ -93,13 +93,13 @@ def get_dl(ds_name, transformations, bs, split = [0.7, 0.15, 0.15]):
    
     """
         
-    assert sum(split) == 1., "Data split listdagi elementlar yig'indisi 1ga teng bo'lishi kerak"
+    assert sum(split) == 1., "Data split sum must be equal to 1"
     
+    # Get dataset for training
     ds = CustomSegmentationDataset(ds_name = ds_name, transformations = transformations)
     
-    tr_len = int(len(ds) * split[0])
-    val_len = int(len(ds) * split[1])
-    test_len = len(ds) - (tr_len + val_len)
+    # Get length for train, validation, and test sets
+    tr_len = int(len(ds) * split[0]); val_len = int(len(ds) * split[1]); test_len = len(ds) - (tr_len + val_len)
     
     # Data split
     tr_ds, val_ds, test_ds = torch.utils.data.random_split(ds, [tr_len, val_len, test_len])
@@ -115,5 +115,6 @@ def get_dl(ds_name, transformations, bs, split = [0.7, 0.15, 0.15]):
     
     return tr_dl, val_dl, test_dl
 
+# Sample run
 # ts = get_transformations(224)[1]
 # tr_dl, val_dl, test_dl = get_dl(ds_name = "flood", transformations = ts, bs = 2)
