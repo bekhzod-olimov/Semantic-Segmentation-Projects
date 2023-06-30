@@ -1,3 +1,4 @@
+# Import libraries
 import torch, yaml, os, pickle, timm, argparse
 from models.unet import UNet
 from models.segformer import SegFormer
@@ -12,7 +13,7 @@ def run(args):
     
     Parameter:
     
-        args - parsed arguments.
+        args - parsed arguments, argparse object.
         
     Output:
     
@@ -26,26 +27,34 @@ def run(args):
     argstr = yaml.dump(args.__dict__, default_flow_style = False)
     print(f"\nTraining Arguments:\n\n{argstr}")
     
-    os.makedirs(args.save_path, exist_ok=True)
+    # Create a directory to save results
+    os.makedirs(args.save_path, exist_ok = True)
     
+    # Get parameters based on the model name
     params = get_params(args.model_name)
+    # Get the dataloader to test the performance of the trained model
     test_dl = torch.load(f"{args.dls_dir}/{args.dataset_name}_test_dl")
     print(f"Test dataloader is successfully loaded!")
     print(f"There are {len(test_dl)} batches in the test dataloader!")
 
-    model = UNet(in_chs = params["in_chs"], n_cls = params["n_cls"], out_chs = params["out_chs"], depth = params["depth"], up_method = params["up_method"]) if args.model_name == "unet" else \
+    # Get the model to be used in the inference
+    model = UNet(in_chs = params["in_chs"], 
+                 n_cls = params["n_cls"], 
+                 out_chs = params["out_chs"], 
+                 depth = params["depth"], 
+                 up_method = params["up_method"]) if args.model_name == "unet" else \
         SegFormer(
-                  in_channels=params["in_chs"],
-                  widths=params["widths"],
-                  depths=params["depths"],
-                  all_num_heads=params["all_num_heads"],
-                  patch_sizes=params["patch_sizes"],
-                  overlap_sizes=params["overlap_sizes"],
-                  reduction_ratios=params["reduction_ratios"],
-                  mlp_expansions=params["mlp_expansions"],
-                  decoder_channels=params["decoder_channels"],
-                  scale_factors=params["scale_factors"],
-                  num_classes=params["num_classes"],
+                  in_channels = params["in_chs"],
+                  widths = params["widths"],
+                  depths = params["depths"],
+                  all_num_heads = params["all_num_heads"],
+                  patch_sizes = params["patch_sizes"],
+                  overlap_sizes = params["overlap_sizes"],
+                  reduction_ratios = params["reduction_ratios"],
+                  mlp_expansions = params["mlp_expansions"],
+                  decoder_channels = params["decoder_channels"],
+                  scale_factors = params["scale_factors"],
+                  num_classes = params["num_classes"],
                         )
     model = model.to(args.device)
     # load params
