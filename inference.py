@@ -56,12 +56,17 @@ def run(args):
                   scale_factors = params["scale_factors"],
                   num_classes = params["num_classes"],
                         )
+    # Move the model to GPU
     model = model.to(args.device)
-    # load params
+    # Load params
     print("\nLoading the state dictionary...")
+    # Get the state dictionary with the trained weight and bias parameters
     state_dict = get_state_dict(f"{args.save_model_path}/{args.model_name}_{args.dataset_name}_best.ckpt")
-    model.load_state_dict(state_dict, strict=True)
+    # Load the trained parameters
+    model.load_state_dict(state_dict, strict = True)
     print(f"The {args.model_name} state dictionary is successfully loaded!\n")
+    
+    # Get predictions using test dataloader and the trained model
     all_ims, all_preds, all_gts = get_preds(model, test_dl, args.device)
     
     visualize(all_ims, all_preds, all_gts, num_ims = 10, rows = 2, save_path = args.save_path, save_name = f"{args.dataset_name}_{args.model_name}")
