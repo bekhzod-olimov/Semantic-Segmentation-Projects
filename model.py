@@ -1,3 +1,4 @@
+# Import libraries
 import torch, torchmetrics, timm, wandb, pytorch_lightning as pl, os
 from torch import nn
 from torch.nn import functional as F
@@ -13,8 +14,14 @@ class LitModel(pl.LightningModule):
     """"
     
     This class gets several arguments and returns a model for training.
-    
-    
+
+    in_chs          - number of input channels to the model, int;
+    out_chs         - number of output channels from the first convolution layer, int;
+    model_name      - name of the model to be trained, str;
+    n_cls           - number of classes in the dataset, int;
+    up_method       - method for upsampling, str;
+    lr              - learning rate value, float.
+        
     """
     
     def __init__(self, in_chs, out_chs, model_name, n_cls,  up_method = "bilinear", lr = 2e-4):
