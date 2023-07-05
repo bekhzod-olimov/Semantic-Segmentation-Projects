@@ -19,15 +19,30 @@ class Metrics():
     
     def __init__(self, pred, gt, loss_fn, eps = 1e-10, n_cls = 2):
         
+        # Get predicted mask and ground truth mask
         self.pred, self.gt = torch.argmax(F.softmax(pred, dim=1), dim = 1), gt 
+        # Get loss function, epsilon value, and number of classes
         self.loss_fn, self.eps, self.n_cls, self.pred_ = loss_fn, eps, n_cls, pred
         
+    # Make tensor contiguous
     def to_contiguous(self, inp): return inp.contiguous().view(-1)
     
     def PA(self):
 
+        """
+        
+        This function computes pixel accuracy.
+
+        Output:
+
+            pa    - pixel accuracy score, float.
+        
+        """
+
+        # Turn off gradients
         with torch.no_grad():
             
+            # Get matching pixels
             match = torch.eq(self.pred, self.gt).int() 
         
         return float(match.sum()) / float(match.numel())
