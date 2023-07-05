@@ -39,7 +39,7 @@ class Metrics():
         
         """
 
-        # Turn off gradients
+        # Turn of gradient calculation
         with torch.no_grad():
             
             # Get matching pixels
@@ -48,28 +48,51 @@ class Metrics():
         return float(match.sum()) / float(match.numel())
 
     def mIoU(self):
+
+        """
         
+        This function computes mean intersection over union score.
+
+        Output:
+
+            miou  - mean intersection over union score, float.
+        
+        """
+        
+        # Turn of gradient calculation
         with torch.no_grad():
             
+            # Get predicted mask and ground truth mask
             pred, gt = self.to_contiguous(self.pred), self.to_contiguous(self.gt)
 
+            # Create a list to compute iou for every class
             iou_per_class = []
             
+            # Go through each class
             for c in range(self.n_cls):
                 
+                # Get predicted class matches
                 match_pred = pred == c
+
+                # Get gt matches
                 match_gt   = gt == c
 
+                # If there is no match
                 if match_gt.long().sum().item() == 0: iou_per_class.append(np.nan)
                     
+                # IoU computation
                 else:
                     
+                    # Compute intersection
                     intersect = torch.logical_and(match_pred, match_gt).sum().float().item()
+                    # Compute union
                     union = torch.logical_or(match_pred, match_gt).sum().float().item()
-
+                    # Compute iou
                     iou = (intersect + self.eps) / (union + self.eps)
+                    # Add to the list
                     iou_per_class.append(iou)
                     
             return np.nanmean(iou_per_class)
     
+    # Compute loss value
     def loss(self): return self.loss_fn(self.pred_, self.gt) 
