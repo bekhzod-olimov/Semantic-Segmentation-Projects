@@ -141,11 +141,28 @@ class LitModel(pl.LightningModule):
     # Track epoch validation finish time and log
     def on_validation_epoch_end(self): self.validation_elapsed_time = time() - self.validation_start_time; self.validation_times.append(self.validation_elapsed_time); self.log("valid_time", self.validation_elapsed_time, prog_bar = True)
     
+    # Function to get train stats
     def get_stats(self): return self.train_times, self.validation_times
     
 class ImagePredictionLogger(Callback):
+
+    """
     
-    def __init__(self, val_samples, cls_names=None, num_samples=2):
+    This class gets several parameters and visualizes validation images with their corresponding predicted masks.
+    
+    Parameters:
+    
+        val_samples    - validation images, tensor;
+        cls_names      - names of the classes in the dataset, list;
+        num_samples    - number of samples to visualize, int.
+        
+    Output:
+    
+        plot           - visualized plot with input images and their corresponding predictions, logger object.
+    
+    """
+    
+    def __init__(self, val_samples, cls_names = None, num_samples = 2):
         super().__init__()
         self.num_samples = num_samples
         self.val_imgs, self.val_masks = val_samples
