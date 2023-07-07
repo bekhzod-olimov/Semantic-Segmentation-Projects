@@ -164,21 +164,24 @@ class ImagePredictionLogger(Callback):
     
     def __init__(self, val_samples, cls_names = None, num_samples = 2):
         super().__init__()
+        # Get the number of images to be visualized
         self.num_samples = num_samples
+        # Get images and their corresponding masks
         self.val_imgs, self.val_masks = val_samples
         
     def on_validation_epoch_end(self, trainer, pl_module):
-        # Bring the tensors to CPU
-        val_imgs = self.val_imgs.to(device=pl_module.device)
-        val_masks = self.val_masks.to(device=pl_module.device).float()
-        # Get model prediction
+        
+        # Move the images and masks to GPU device 
+        val_imgs = self.val_imgs.to(device = pl_module.device); val_masks = self.val_masks.to(device = pl_module.device).float()
+        
+        # Get model predicted masks
         print(torch.unique(pl_module(val_imgs)))
+        # Apply thresholding
         pred_masks = (pl_module(val_imgs) > 0.5).float()
+        
         # Log the images as wandb Image
         trainer.logger.experiment.log({
             "Input Images": [wandb.Image(x, caption="Input image") for x in val_imgs[:self.num_samples]], 
             "Ground Truth": [wandb.Image(y, caption="Ground Truth") for y in val_masks[:self.num_samples]],
             "Generated Masks": [wandb.Image(pred_mask, caption="Generated Mask") for pred_mask in pred_masks[:self.num_samples]]
-             })
-                                                    
-            
+             })                               
