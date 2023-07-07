@@ -29,24 +29,28 @@ class LitModel(pl.LightningModule):
         
         # Log hyperparameters
         self.save_hyperparameters()
+        # Get the learning rate for optimizer
         self.lr = lr
+        # Get the model parameters
         params = get_params(model_name)
+        # Set the loss function
         self.loss_fn = nn.CrossEntropyLoss()
         # Get model to be trained
         self.model = UNet(in_chs = params["in_chs"], n_cls = params["n_cls"], out_chs = params["out_chs"], depth = params["depth"], up_method = params["up_method"]) if model_name == "unet" else \
         SegFormer(
-                  in_channels=params["in_chs"],
-                  widths=params["widths"],
-                  depths=params["depths"],
-                  all_num_heads=params["all_num_heads"],
-                  patch_sizes=params["patch_sizes"],
-                  overlap_sizes=params["overlap_sizes"],
-                  reduction_ratios=params["reduction_ratios"],
-                  mlp_expansions=params["mlp_expansions"],
-                  decoder_channels=params["decoder_channels"],
-                  scale_factors=params["scale_factors"],
-                  num_classes=params["num_classes"],
+                  in_channels = params["in_chs"],
+                  widths = params["widths"],
+                  depths = params["depths"],
+                  all_num_heads = params["all_num_heads"],
+                  patch_sizes = params["patch_sizes"],
+                  overlap_sizes = params["overlap_sizes"],
+                  reduction_ratios = params["reduction_ratios"],
+                  mlp_expansions = params["mlp_expansions"],
+                  decoder_channels = params["decoder_channels"],
+                  scale_factors = params["scale_factors"],
+                  num_classes = params["num_classes"],
                         )
+        # Initialize lists to track train and validation times
         self.train_times, self.validation_times = [], []
 
     # Get optimizere to update trainable parameters
@@ -55,8 +59,10 @@ class LitModel(pl.LightningModule):
     # Feed forward of the model
     def forward(self, inp): return self.model(inp)
     
+    # Track epoch train start time
     def on_train_epoch_start(self): self.train_start_time = time()
     
+    # Track epoch train finish time and log
     def on_train_epoch_end(self): self.train_elapsed_time = time() - self.train_start_time; self.train_times.append(self.train_elapsed_time); self.log("train_time", self.train_elapsed_time, prog_bar = True)
         
     def training_step(self, batch, batch_idx):
@@ -78,8 +84,11 @@ class LitModel(pl.LightningModule):
         
         # Get images and their corresponding labels
         im, gt = batch
+        # Obtain predicted mask
         pred_mask = self(im)
+        # Segformer case
         if pred_mask.shape[2] != gt.shape[2]: pred_mask = F.upsample(pred_mask, scale_factor = (gt.shape[2] // pred_mask.shape[2]), mode = "bilinear")
+        # Get evaluation metrics values
         met = Metrics(pred_mask, gt, self.loss_fn)
         loss = met.loss()
         iou = met.mIoU()
@@ -110,8 +119,11 @@ class LitModel(pl.LightningModule):
         
         # Get images and their corresponding labels
         im, gt = batch
+        # Get predicted mask
         pred_mask = self(im)
+        # Segformer case
         if pred_mask.shape[2] != gt.shape[2]: pred_mask = F.upsample(pred_mask, scale_factor = (gt.shape[2] // pred_mask.shape[2]), mode = "bilinear")
+        # Get evaluation metrics values
         met = Metrics(pred_mask, gt, self.loss_fn)
         loss = met.loss()
         iou = met.mIoU()
@@ -123,8 +135,10 @@ class LitModel(pl.LightningModule):
         
         return loss
     
+    # Track epoch validation start time
     def on_validation_epoch_start(self): self.validation_start_time = time()
     
+    # Track epoch validation finish time and log
     def on_validation_epoch_end(self): self.validation_elapsed_time = time() - self.validation_start_time; self.validation_times.append(self.validation_elapsed_time); self.log("valid_time", self.validation_elapsed_time, prog_bar = True)
     
     def get_stats(self): return self.train_times, self.validation_times
