@@ -14,15 +14,24 @@ def get_state_dict(checkpoint_path):
 
         checkpoint_path      - path to the checkpoint of the trained model, str.
 
-    Outp
+    Output:
+
+        new_state_dict       - a new state dictionary with trained parameters, dictionary.
     
     """
     
+    # Load the trained model checkpoint
     checkpoint = torch.load(checkpoint_path)
+    # Initialize a new dictionary
     new_state_dict = OD()
+    # Go through every key and value of the state dictionary
     for k, v in checkpoint["state_dict"].items():
-        name = k.replace("model.", "") # remove `model.`
+        # Pytorch lightning trained weigths contain "model." prefix in the name of the trainable parameters
+        # Remove "model." word in order to use model in torch
+        name = k.replace("model.", "") 
+        # Replace the name with a new one
         new_state_dict[name] = v
+    
     return new_state_dict
 
 def tn2np(t, inv_fn=None): return (inv_fn(t) * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if inv_fn is not None else (t * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8)
