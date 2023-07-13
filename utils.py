@@ -1,14 +1,22 @@
-import torch, random, numpy as np
-from collections import OrderedDict as OD
-from time import time
-from matplotlib import pyplot as plt
-from pytorch_grad_cam import GradCAM
-from pytorch_grad_cam.utils.image import show_cam_on_image
-import cv2
-from tqdm import tqdm
-from metrics import Metrics
+# Import libraries
+import torch, cv2, random, numpy as np
+from collections import OrderedDict as OD; from time import time
+from pytorch_grad_cam import GradCAM; from pytorch_grad_cam.utils.image import show_cam_on_image
+from matplotlib import pyplot as plt;  from tqdm import tqdm; from metrics import Metrics
 
 def get_state_dict(checkpoint_path):
+
+    """
+    
+    This function gets a path to the checkpoint of the trained model and returns new state dictionary containing the trained parameters.
+
+    Parameter:
+
+        checkpoint_path      - path to the checkpoint of the trained model, str.
+
+    Outp
+    
+    """
     
     checkpoint = torch.load(checkpoint_path)
     new_state_dict = OD()
