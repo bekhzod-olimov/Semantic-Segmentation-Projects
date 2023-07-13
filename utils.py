@@ -34,9 +34,29 @@ def get_state_dict(checkpoint_path):
     
     return new_state_dict
 
-def tn2np(t, inv_fn=None): return (inv_fn(t) * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if inv_fn is not None else (t * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8)
+# Function to convert input tensor to numpy array
+def tn2np(t, inv_fn = None): return (inv_fn(t) * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if inv_fn is not None else (t * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8)
 
 def get_preds(model, test_dl, device):
+
+    """
+    
+    This function gets several parameters and generates segmentation masks using the trained model.
+
+    Parameter:
+
+        model       - a trained model, torch model object;
+        test_dl     - test dataloader, torch dataloader object;
+        device      - gpu device name, str.
+
+    Output:
+
+        all_ims    - all images in the test dataloader;
+        all_preds  - all predicted masks using the trained model;
+        all_gts    - all ground truth masks in the test dataloader.
+    
+    """
+    
     print("Start inference...")
     
     all_ims, all_preds, all_gts, acc = [], [], [], 0
