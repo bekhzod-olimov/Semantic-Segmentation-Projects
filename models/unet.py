@@ -85,7 +85,24 @@ class DownSampling(nn.Module):
 
 class UpSampling(nn.Module):
 
-    def __init__(self, in_chs, out_chs, mode, upsample=None):
+    """
+    
+    This class gets several parameters and conducts upsampling operation in the decoder.
+
+    Parameters:
+
+        in_chs      - channels of the input volume to the class, int;
+        out_chs     - channels of the output volume from the first convolution layer, int;
+        mode        - upsampling method type, str;
+        upsample    - whether or not to upsample, bool.
+
+    Output:
+
+        out         - upsampled output, tensor.
+    
+    """
+
+    def __init__(self, in_chs, out_chs, mode, upsample = None):
         super().__init__()
         
         if mode in ['bilinear', 'nearest']: 
