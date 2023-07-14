@@ -105,20 +105,38 @@ class UpSampling(nn.Module):
     def __init__(self, in_chs, out_chs, mode, upsample = None):
         super().__init__()
         
-        if mode in ['bilinear', 'nearest']: 
-            upsample = True
-            up_mode = mode
-        self.upsample = nn.Upsample(scale_factor=2, mode=up_mode) if upsample else nn.ConvTranspose2d(in_chs, in_chs // 2, kernel_size=2, stride=2)
+        # Choose upsampling method type
+        if mode in ["bilinear", "nearest"]: 
+            upsample = True; up_mode = mode
+        # Initialize upsampling layer
+        self.upsample = nn.Upsample(scale_factor = 2, mode = up_mode) if upsample else nn.ConvTranspose2d(in_chs, in_chs // 2, kernel_size = 2, stride = 2)
+        # Initialize convolution block to apply after upsampling
         self.conv = UNetBlock(in_chs, out_chs)
 
     def forward(self, inp1, inp2):
+
+        """
+
+        This function gets two input tensors and performs one upsampling block of the decoder.
+
+        Parameter:
+
+            inp1      - the first input volume, tensor;
+            inp2      - the second input volume, tensor.
+
+        Output:
+
+            out       - upsampled volume with skip connection applied, tensor.
         
+        """
+        
+        # Upsample the first input
         inp1 = self.upsample(inp1)
-        pad_y = inp2.size()[2] - inp1.size()[2]
-        pad_x = inp2.size()[3] - inp1.size()[3]
+        # Padding
+        pad_y = inp2.size()[2] - inp1.size()[2]; pad_x = inp2.size()[3] - inp1.size()[3]
         inp1 = F.pad(inp1, [pad_x // 2, pad_x - pad_x // 2, pad_y // 2, pad_y - pad_y // 2])
         
-        return self.conv(torch.cat([inp2, inp1], dim=1))
+        return self.conv(torch.cat([inp2, inp1], dim = 1))
 
 class FinalConv(nn.Module):
     def __init__(self, in_chs, out_chs):
