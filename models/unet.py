@@ -58,14 +58,30 @@ class UNetBlock(nn.Module):
     def forward(self, inp): return self.block_2(self.block_1(inp))
 
 class DownSampling(nn.Module):
+
+    """
+    
+    This class gets several parameters and conducts downsampling operation.
+
+    Parameters:
+
+        in_chs      - channels of the input volume to the class, int;
+        out_chs     - channels of the output volume from the first convolution layer, int.
+
+    Output:
+
+        out        - downsampled output, tensor.
+    
+    """
     
     def __init__(self, in_chs, out_chs):
         super().__init__()
         
+        # Initialize downsampling block
         self.downsample_block = nn.Sequential(  nn.MaxPool2d(2), UNetBlock(in_chs, out_chs) )
 
+    # Feed forward of the class
     def forward(self, x): return self.downsample_block(x)
-
 
 class UpSampling(nn.Module):
 
