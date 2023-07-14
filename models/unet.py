@@ -1,16 +1,14 @@
 # Import libraries
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+import torch, torch.nn.functional as F, torch.nn as nn
 from typing import List
 
 class UNetBlock(nn.Module):
     
     """
     
-    This class gets several arguments and formulates a convolution block of UNet model.
+    This class gets several parameters and formulates a convolution block of UNet model.
     
-    Arguments:
+    Parameters:
     
         in_chs   - number of channels of the input volume, int;
         out_chs  - number of channels of the output volume, int;
@@ -37,9 +35,9 @@ class UNetBlock(nn.Module):
         
         """
         
-        This function gets several arguments and returns a convolution block of UNet.
+        This function gets several parameters and returns a convolution block of UNet.
         
-        Arguments:
+        Parameters:
         
             in_chs   - number of channels of the input volume, int;
             out_chs  - number of channels of the output volume, int.
@@ -56,6 +54,7 @@ class UNetBlock(nn.Module):
                nn.ReLU(inplace = True)
                             )
     
+    # Feed forward of the class
     def forward(self, inp): return self.block_2(self.block_1(inp))
 
 class DownSampling(nn.Module):
