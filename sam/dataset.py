@@ -38,7 +38,22 @@ class CustomDataset(Dataset):
     def __len__(self): return len(self.im_paths)
     
     def __getitem__(self, idx):
+
+        """
+
+        This function gets an index and returns data information.
+
+        Parameter:
+
+            idx     - index, int.
+
+        Output:
+
+            inputs  - data information, dict.
         
+        """
+        
+        # Get an image and convert it to RGB
         im = Image.open(self.im_paths[idx]).convert("RGB")
         gt = cv2.resize(np.array(Image.open(self.gt_paths[idx]).convert('L')), dsize = (256, 256), interpolation = cv2.INTER_CUBIC)
         bbox = [0, 0, 256, 256]
