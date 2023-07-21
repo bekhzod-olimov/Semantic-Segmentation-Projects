@@ -23,16 +23,18 @@ class CustomDataset(Dataset):
     
     def __init__(self, root, transformations):
         
+        # Get transformations
         self.transformations = transformations
-        self.im_paths = sorted(glob(f"{root}/img/*.png"))
-        self.gt_paths = sorted(glob(f"{root}/label/*.png"))        
- 
-        self.total_ims = len(self.im_paths)
-        self.total_gts = len(self.gt_paths)
-        
+        # Get images and gts paths
+        self.im_paths = sorted(glob(f"{root}/img/*.png")); self.gt_paths = sorted(glob(f"{root}/label/*.png"))        
+
+        # Get total number of images and gts
+        self.total_ims = len(self.im_paths); self.total_gts = len(self.gt_paths)
+        # Make sure total number of images equals to total number of gts
         assert self.total_ims == self.total_gts
         print(f"There are {self.total_ims} images and {self.total_gts} masks in the dataset!")  
         
+    # Function to return total number of images in the dataset
     def __len__(self): return len(self.im_paths)
     
     def __getitem__(self, idx):
