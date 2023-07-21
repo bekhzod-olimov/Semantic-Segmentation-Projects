@@ -1,10 +1,25 @@
+# Import libraries
 import os, torch, cv2, numpy as np
 from torch.utils.data import Dataset, DataLoader
-from glob import glob
-from PIL import Image
+from glob import glob; from PIL import Image
 from utils import get_bounding_box
 
 class CustomDataset(Dataset):
+
+    """
+    
+    This class get several parameters and returns custom dataset object.
+
+    Parameters:
+
+        root              - path to data with images, str;
+        transformations   - transformations to be applied, transforms object.
+
+    Output:
+
+        ds               - custom dataset, torch dataset object.
+    
+    """
     
     def __init__(self, root, transformations):
         
