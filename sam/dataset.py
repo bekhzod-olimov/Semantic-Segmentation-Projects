@@ -55,10 +55,15 @@ class CustomDataset(Dataset):
         
         # Get an image and convert it to RGB
         im = Image.open(self.im_paths[idx]).convert("RGB")
+        # Get a gt, convert it to grayscale, and resize
         gt = cv2.resize(np.array(Image.open(self.gt_paths[idx]).convert('L')), dsize = (256, 256), interpolation = cv2.INTER_CUBIC)
+        # Set initial coordinates of the bounding box
         bbox = [0, 0, 256, 256]
+        # Apply transformations to the image 
         inputs = self.transformations(im, input_boxes = [[bbox]], return_tensors = "pt")
+        # Squueze values of the dictionary
         inputs = {k: v.squeeze(0) for k, v in inputs.items()}
+        # Add gt mask to the dictionary
         inputs["ground_truth_mask"] = torch.from_numpy(gt)
         
         return inputs
