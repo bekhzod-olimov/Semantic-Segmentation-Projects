@@ -80,6 +80,7 @@ class MRIDataset(Dataset):
         transformations  - image transformations to be applied, transforms object.
     
     """
+    
     def __init__(self, root, transformations):
         
         # Get images paths
@@ -135,6 +136,18 @@ class MRIDataset(Dataset):
         return inputs
     
 class ISICDataset(Dataset):
+
+    """
+    
+    This class gets several parameters and returns ISIC dataset.
+
+    Parameters:
+
+        root             - path to data, str;
+        transformations  - image transformations to be applied, transforms object.
+    
+    """
+    
     def __init__(self, root, transformations):
         
         self.im_paths = sorted(glob(f"{root}/images/*.jpg"))
