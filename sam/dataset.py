@@ -98,33 +98,37 @@ class MRIDataset(Dataset):
 
         Parameter:
 
-            idx    - index within the dataset, int.
+            idx      - index within the dataset, int.
 
         Output:
 
+            inputs  - dataset meta data information, dict. 
             
-
-            
-        
         """
         
+        # Get an image path
         im_path = self.im_paths[idx]
+        # Get the directory name based on the path
         dirname = os.path.dirname(im_path)
+        # Set the gt path
         gt_path = f"{dirname}/{os.path.splitext(os.path.basename(im_path))[0]}_mask.tif"
+        # Get an image
         im = Image.open(im_path)
+        # Get a gt and transform to array
         gt = np.array(Image.open(gt_path))
-        
+        # Get the bounding box information
         prompt = get_bounding_box(gt)
         
-        # prepare image and prompt for the model
-        inputs = self.transformations(im, input_boxes=[[prompt]], return_tensors="pt")
-
-        # remove batch dimension which the processor adds by default
+        # Prepare image and prompt for the model
+        inputs = self.transformations(im, input_boxes = [[prompt]], return_tensors = "pt")
+        # Remove batch dimension which the processor adds by default
         inputs = {k: v.squeeze(0) for k, v in inputs.items()}
 
-        # add ground truth segmentation (ground truth image size is 256x256)
+        # Add ground truth segmentation (ground truth image size is 256 x 256)
         # inputs["ground_truth_mask"] = torch.from_numpy(gt.astype(np.int8))
+        # Convert to tensor
         gt = torch.from_numpy(gt)
+        # Ensure gt values are 0 (background) and 1 (foreground)
         gt[gt < 0] = 0; gt[gt > 0] = 1
         inputs["ground_truth_mask"] = gt
 
