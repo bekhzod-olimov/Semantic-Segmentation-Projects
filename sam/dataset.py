@@ -69,6 +69,17 @@ class CustomDataset(Dataset):
         return inputs
     
 class MRIDataset(Dataset):
+
+    """
+    
+    This class gets several parameters and returns MRI dataset.
+
+    Parameters:
+
+        root             - path to data, str;
+        transformations  - image transformations to be applied, transforms object.
+    
+    """
     def __init__(self, root, transformations):
         
         self.im_paths = [im_path for im_path in sorted(glob(f"{root}/*/*.tif")) if "mask" not in im_path]
