@@ -82,12 +82,31 @@ class MRIDataset(Dataset):
     """
     def __init__(self, root, transformations):
         
+        # Get images paths
         self.im_paths = [im_path for im_path in sorted(glob(f"{root}/*/*.tif")) if "mask" not in im_path]
+        # Get the transformations to be applied
         self.transformations = transformations
 
+    # Function to get the length of the dataset images
     def __len__(self): return len(self.im_paths) // 2
 
     def __getitem__(self, idx):
+
+        """
+        
+        This function gets an dataset index and returns image/gt pair.
+
+        Parameter:
+
+            idx    - index within the dataset, int.
+
+        Output:
+
+            
+
+            
+        
+        """
         
         im_path = self.im_paths[idx]
         dirname = os.path.dirname(im_path)
