@@ -175,22 +175,28 @@ class ISICDataset(Dataset):
             
         """
         
+        # Get an image path and its corresponding gt mask
         im_path, gt_path = self.im_paths[idx],  self.gt_paths[idx]
+        # Read the image and gt mask
         im, gt = Image.open(im_path), cv2.resize(np.array(Image.open(gt_path)), (256, 256))
-        
+
+        # Get bounding boxes
         bbox = get_bounding_box(gt)
+        # Go through the transformations
         inputs = self.transformations(im, input_boxes = [[bbox]], return_tensors = "pt")
 
-        # remove batch dimension which the processor adds by default
+        # Remove batch dimension which the processor adds by default
         inputs = {k: v.squeeze(0) for k, v in inputs.items()}
 
-        # add ground truth segmentation (ground truth image size is 256x256)
+        # Add ground truth segmentation (ground truth image size is 256x256)
         gt = torch.from_numpy(gt)
+        # Make sure the gt mask has 0 and 1 values only
         gt[gt < 0] = 0; gt[gt > 0] = 1
+        # Creata a new key with gt value
         inputs["ground_truth_mask"] = gt
 
         return inputs
-    
+        
 def get_dls(ds_name, bs, transformations, split = [0.8, 0.1, 0.1], num_ws = 8, extension_ratio = 2):
     
     data_path = "/home/ubuntu/workspace/dataset/bekhzod/sem_segmentation"
