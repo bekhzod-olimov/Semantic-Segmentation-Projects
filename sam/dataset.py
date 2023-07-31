@@ -198,6 +198,21 @@ class ISICDataset(Dataset):
         return inputs
         
 def get_dls(ds_name, bs, transformations, split = [0.8, 0.1, 0.1], num_ws = 8, extension_ratio = 2):
+
+    """
+    
+    This function gets several parameters and returns dataloaders.
+
+    Parameters:
+
+        ds_name           - name of the dataset, str;
+        bs                - batch size, int;
+        transformations   - transformations to be applied, torchvision object;
+        split             - values to split the dataset, list -> float;
+        num_ws            - number of workers in the dataloaders, int;
+        extension_ratio   - value to extend the batch size in the dataloader, int.
+    
+    """
     
     data_path = "/home/ubuntu/workspace/dataset/bekhzod/sem_segmentation"
     root = f"{data_path}/cells_new" if "cell" in ds_name else (f"{data_path}/mri/kaggle_3m" if "mri" in ds_name else f"{data_path}/isic")
