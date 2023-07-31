@@ -160,6 +160,20 @@ class ISICDataset(Dataset):
     def __len__(self): return len(self.im_paths)
 
     def __getitem__(self, idx):
+
+        """
+        
+        This function gets an dataset index and returns image/gt pair.
+
+        Parameter:
+
+            idx      - index within the dataset, int.
+
+        Output:
+
+            inputs  - dataset meta data information, dict. 
+            
+        """
         
         im_path, gt_path = self.im_paths[idx],  self.gt_paths[idx]
         im, gt = Image.open(im_path), cv2.resize(np.array(Image.open(gt_path)), (256, 256))
