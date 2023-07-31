@@ -1,8 +1,7 @@
 # Import libraries
 import os, torch, cv2, numpy as np
 from torch.utils.data import Dataset, DataLoader
-from glob import glob; from PIL import Image
-from utils import get_bounding_box
+from glob import glob; from PIL import Image; from utils import get_bounding_box
 
 class CustomDataset(Dataset):
 
@@ -149,11 +148,15 @@ class ISICDataset(Dataset):
     """
     
     def __init__(self, root, transformations):
-        
+
+        # Get the image paths
         self.im_paths = sorted(glob(f"{root}/images/*.jpg"))
+        # Get the gt paths
         self.gt_paths = sorted(glob(f"{root}/masks/*.png"))
+        # Get the transformations to be applied
         self.transformations = transformations
 
+    # Function to get the number of images in the dataset
     def __len__(self): return len(self.im_paths)
 
     def __getitem__(self, idx):
