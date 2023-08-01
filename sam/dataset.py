@@ -231,7 +231,8 @@ def get_dls(ds_name, bs, transformations, split = [0.8, 0.1, 0.1], num_ws = 8, e
     # Split the data into train, validation, and test sets
     tr_ds, val_ds, test_ds = torch.utils.data.random_split(dataset = ds, lengths = [tr_len, val_len, test_len])
     print(f"There are {len(tr_ds)} train, {len(val_ds)} validation, and {len(test_ds)} test images in the dataset!")
-    
+
+    # Get the train, validation, and test dataloaders based on the datasets
     tr_dl  = torch.utils.data.DataLoader(dataset = tr_ds, batch_size = bs * extension_ratio, shuffle = True, num_workers = num_ws)
     val_dl = torch.utils.data.DataLoader(dataset = val_ds, batch_size = bs, shuffle = True, num_workers = num_ws)
     test_dl = torch.utils.data.DataLoader(dataset = test_ds, batch_size = bs, shuffle = True, num_workers = num_ws)
@@ -239,5 +240,3 @@ def get_dls(ds_name, bs, transformations, split = [0.8, 0.1, 0.1], num_ws = 8, e
     return tr_dl, val_dl, test_dl
 
 # tr_dl, val_dl, test_dl = get_dls(ds_name = "isic", transformations = processor, bs = 16)
-
-
