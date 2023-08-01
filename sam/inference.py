@@ -48,12 +48,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Semantic Segmentation Inference Arguments")
     
     # Add arguments to the parser
-    parser.add_argument("-dn", "--ds_name", type = str, default = 'isic', help = "Dataset name for training")
-    parser.add_argument("-mn", "--model_name", type = str, default = 'SAM', help = "Model name for backbone")
-    parser.add_argument("-d", "--device", type = str, default = 'cuda:3', help = "GPU device name")
-    # parser.add_argument("-mn", "--model_name", type = str, default = 'vit_base_patch16_224', help = "Model name for backbone")
-    # parser.add_argument("-mn", "--model_name", type = str, default = 'vgg16_bn', help = "Model name for backbone")
-    parser.add_argument("-sm", "--save_model_path", type = str, default = 'saved_models', help = "Path to the directory to save a trained model")
+    parser.add_argument("-dn", "--ds_name", type = str, default = "isic", help = "Dataset name for training")
+    parser.add_argument("-mn", "--model_name", type = str, default = "SAM", help = "Model name for backbone")
+    parser.add_argument("-d", "--device", type = str, default = "cuda:3", help = "GPU device name")
+    parser.add_argument("-sm", "--save_model_path", type = str, default = "saved_models", help = "Path to the directory to save a trained model")
     parser.add_argument("-sp", "--save_path", type = str, default = "results", help = "Path to dir to save inference results")
     parser.add_argument("-dl", "--dls_dir", type = str, default = "saved_dls", help = "Path to dir to save dataloaders")
     
