@@ -24,17 +24,20 @@ def run(args):
 
     # Make a directory to save train results
     os.makedirs(args.save_path, exist_ok = True)
-    
+
+    # Get the saved test dataloader
     test_dl = torch.load(f"{args.dls_dir}/{args.ds_name}_test_dl")
     print(f"Test dataloader is successfully loaded!")
     print(f"There are {len(test_dl)} batches in the test dataloader!")
 
+    # Get the trained model
     model = get_model().to(args.device)
-    # load params
+    # Load params
     print("\nLoading the state dictionary...")
     state_dict = get_state_dict(f"{args.save_model_path}/{args.model_name}_{args.ds_name}_best.ckpt")
     model.load_state_dict(state_dict, strict = True)
     print(f"The {args.model_name} state dictionary is successfully loaded!\n")
+    # Get images, predictions, and gts
     all_ims, all_preds, all_gts = get_preds(model, test_dl, args.device, ds_name = args.ds_name, num_bs = 5)
     
     visualize(all_ims, all_preds, all_gts, num_ims = 4, rows = 2, save_path = args.save_path, save_name = f"{args.ds_name}_{args.model_name}", cmap = "gist_heat", ds_name = args.ds_name)
