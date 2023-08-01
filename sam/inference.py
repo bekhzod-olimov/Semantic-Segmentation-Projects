@@ -21,8 +21,9 @@ def run(args):
     # Get train arguments 
     argstr = yaml.dump(args.__dict__, default_flow_style = False)
     print(f"\nTraining Arguments:\n\n{argstr}")
-    
-    os.makedirs(args.save_path, exist_ok=True)
+
+    # Make a directory to save train results
+    os.makedirs(args.save_path, exist_ok = True)
     
     test_dl = torch.load(f"{args.dls_dir}/{args.ds_name}_test_dl")
     print(f"Test dataloader is successfully loaded!")
