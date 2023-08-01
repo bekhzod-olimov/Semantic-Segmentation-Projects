@@ -213,9 +213,12 @@ def get_dls(ds_name, bs, transformations, split = [0.8, 0.1, 0.1], num_ws = 8, e
         extension_ratio   - value to extend the batch size in the dataloader, int.
     
     """
-    
+
+    # Set the path to data with images 
     data_path = "/home/ubuntu/workspace/dataset/bekhzod/sem_segmentation"
+    # Get the images paths
     root = f"{data_path}/cells_new" if "cell" in ds_name else (f"{data_path}/mri/kaggle_3m" if "mri" in ds_name else f"{data_path}/isic")
+    # Get the dataset based on the dataset name
     ds = CustomDataset(root = root, transformations = transformations) if "cell" in ds_name else (MRIDataset(root = root, transformations = transformations) if "mri" in ds_name else ISICDataset(root = root, transformations = transformations))
     
     tr_len = int(len(ds) * split[0])
