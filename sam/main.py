@@ -1,12 +1,10 @@
 # Import libraries
 import torch, wandb, argparse, yaml, os, pickle, pytorch_lightning as pl
-from transformers import SamProcessor
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint, Callback
-from dataset import get_dls
-from time import time
-from model import LitModel, ImagePredictionLogger
+from dataset import get_dls; from transformers import SamProcessor
+from time import time; from model import LitModel, ImagePredictionLogger
 
 def run(args):
     
