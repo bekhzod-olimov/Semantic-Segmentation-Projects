@@ -225,6 +225,7 @@ def get_dls(ds_name, bs, transformations, split = [0.8, 0.1, 0.1], num_ws = 8, e
     tr_len = int(len(ds) * split[0])
     # Get the validation set lentgh
     val_len = int(len(ds) * split[1])
+    # Get the test set length
     test_len = int(len(ds) - (tr_len + val_len))
 
     tr_ds, val_ds, test_ds = torch.utils.data.random_split(dataset = ds, lengths = [tr_len, val_len, test_len])
