@@ -39,13 +39,13 @@ def run(args):
     print(f"The {args.model_name} state dictionary is successfully loaded!\n")
     # Get images, predictions, and gts
     all_ims, all_preds, all_gts = get_preds(model, test_dl, args.device, ds_name = args.ds_name, num_bs = 5)
-    
+    # Visualization based on the inference results
     visualize(all_ims, all_preds, all_gts, num_ims = 4, rows = 2, save_path = args.save_path, save_name = f"{args.ds_name}_{args.model_name}", cmap = "gist_heat", ds_name = args.ds_name)
     
 if __name__ == "__main__":
     
     # Initialize Argument Parser    
-    parser = argparse.ArgumentParser(description = 'Image Classification Training Arguments')
+    parser = argparse.ArgumentParser(description = "Semantic Segmentation Inference Arguments")
     
     # Add arguments to the parser
     parser.add_argument("-dn", "--ds_name", type = str, default = 'isic', help = "Dataset name for training")
