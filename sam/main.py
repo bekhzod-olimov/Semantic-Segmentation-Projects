@@ -25,20 +25,26 @@ def run(args):
     argstr = yaml.dump(args.__dict__, default_flow_style = False)
     print(f"\nTraining Arguments:\n\n{argstr}")
     
+    # Wandb login
     os.system("wandb login --relogin 3204eaa1400fed115e40f43c7c6a5d62a0867ed1")
-    os.makedirs(args.dls_dir, exist_ok=True)
-    os.makedirs(args.stats_dir, exist_ok=True)
-    
+    # Create directories to save train process information
+    os.makedirs(args.dls_dir, exist_ok = True); os.makedirs(args.stats_dir, exist_ok = True)
+     
+    # Get transformations of the model
     transformations = SamProcessor.from_pretrained("facebook/sam-vit-base")
-    tr_dl, val_dl, test_dl = get_dls(ds_name = args.ds_name, bs = args.batch_size, transformations = transformations, extension_ratio = 1)
     
+    # Get the train, validation, and test dataloaders
+    tr_dl, val_dl, test_dl = get_dls(ds_name = args.ds_name, bs = args.batch_size, transformations = transformations, extension_ratio = 1)
+
+    # Save the dataloaders
     torch.save(tr_dl,   f"{args.dls_dir}/{args.ds_name}_tr_dl")
     torch.save(val_dl,  f"{args.dls_dir}/{args.ds_name}_val_dl")
     torch.save(test_dl, f"{args.dls_dir}/{args.ds_name}_test_dl")
     
+    # Load the train and validation dataloaders
     tr_dl, val_dl = torch.load(f"{args.dls_dir}/{args.ds_name}_tr_dl"), torch.load(f"{args.dls_dir}/{args.ds_name}_val_dl")
     
-    # Samples required by the custom ImagePredictionLogger callback to log image predictions.
+    # Get the samples required by the custom ImagePredictionLogger callback to log image predictions
     val_samples = next(iter(val_dl))
 
     model = LitModel(ds_name = args.ds_name, lr = args.learning_rate) 
