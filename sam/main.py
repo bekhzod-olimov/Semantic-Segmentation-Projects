@@ -47,10 +47,11 @@ def run(args):
     # Get the samples required by the custom ImagePredictionLogger callback to log image predictions
     val_samples = next(iter(val_dl))
 
+    # Get the model to be trained
     model = LitModel(ds_name = args.ds_name, lr = args.learning_rate) 
 
     # Initialize wandb logger
-    wandb_logger = WandbLogger(project='sem_segmentation', job_type='train', name=f"{args.ds_name}_{args.model_name}_{args.batch_size}")
+    wandb_logger = WandbLogger(project = "sem_segmentation", job_type = "train", name = f"{args.ds_name}_{args.model_name}_{args.batch_size}")
 
     # Initialize a trainer
     trainer = pl.Trainer(max_epochs = args.epochs, accelerator="gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger, fast_dev_run=False,
