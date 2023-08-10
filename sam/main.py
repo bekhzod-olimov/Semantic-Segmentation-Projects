@@ -57,11 +57,14 @@ def run(args):
     trainer = pl.Trainer(max_epochs = args.epochs, accelerator = "gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger, fast_dev_run = False,
                          callbacks = [EarlyStopping(monitor = "valid_loss", mode = "min", patience = 5), ImagePredictionLogger(val_samples, ds_name = args.ds_name),
                                       ModelCheckpoint(monitor = "valid_loss", dirpath = args.save_model_path, filename = f"{args.model_name}_{args.ds_name}_best")])
-
     
+    # Set the train start time
     start_time = time()
+    # Start training process
     trainer.fit(model, tr_dl, val_dl)
+    # Get the model train statistics
     train_times, valid_times = model.get_stats()
+    # Save the train and validation time stats
     torch.save(train_times, f"{args.stats_dir}/pl_train_times_{args.devices}_gpu")
     torch.save(valid_times[1:], f"{args.stats_dir}/pl_valid_times_{args.devices}_gpu")
 
@@ -74,15 +77,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Image Classification Training Arguments")
     
     # Add arguments to the parser
-    parser.add_argument("-r", "--ds_name", type = str, default = 'mri', help = "Dataset name for training")
+    parser.add_argument("-r", "--ds_name", type = str, default = "mri", help = "Dataset name for training")
     parser.add_argument("-bs", "--batch_size", type = int, default = 8, help = "Mini-batch size")
-    parser.add_argument("-mn", "--model_name", type = str, default = 'SAM', help = "Model name for backbone")
-    # parser.add_argument("-mn", "--model_name", type = str, default = 'vit_base_patch16_224', help = "Model name for backbone")
-    # parser.add_argument("-mn", "--model_name", type = str, default = 'vgg16_bn', help = "Model name for backbone")
+    parser.add_argument("-mn", "--model_name", type = str, default = "SAM", help = "Model name for backbone")
     parser.add_argument("-d", "--devices", type = int, default = 4, help = "Number of GPUs for training")
     parser.add_argument("-lr", "--learning_rate", type = float, default = 1e-3, help = "Learning rate value")
     parser.add_argument("-e", "--epochs", type = int, default = 200, help = "Train epochs number")
-    parser.add_argument("-sm", "--save_model_path", type = str, default = 'saved_models', help = "Path to the directory to save a trained model")
+    parser.add_argument("-sm", "--save_model_path", type = str, default = "saved_models", help = "Path to the directory to save a trained model")
     parser.add_argument("-sd", "--stats_dir", type = str, default = "stats", help = "Path to dir to save train statistics")
     parser.add_argument("-dl", "--dls_dir", type = str, default = "saved_dls", help = "Path to dir to save dataloaders")
     
