@@ -54,9 +54,9 @@ def run(args):
     wandb_logger = WandbLogger(project = "sem_segmentation", job_type = "train", name = f"{args.ds_name}_{args.model_name}_{args.batch_size}")
 
     # Initialize a trainer
-    trainer = pl.Trainer(max_epochs = args.epochs, accelerator="gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger, fast_dev_run=False,
-                         callbacks = [EarlyStopping(monitor = 'valid_loss', mode = 'min', patience=5), ImagePredictionLogger(val_samples, ds_name = args.ds_name),
-                                      ModelCheckpoint(monitor = 'valid_loss', dirpath = args.save_model_path, filename = f'{args.model_name}_{args.ds_name}_best')])
+    trainer = pl.Trainer(max_epochs = args.epochs, accelerator = "gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger, fast_dev_run = False,
+                         callbacks = [EarlyStopping(monitor = "valid_loss", mode = "min", patience = 5), ImagePredictionLogger(val_samples, ds_name = args.ds_name),
+                                      ModelCheckpoint(monitor = "valid_loss", dirpath = args.save_model_path, filename = f"{args.model_name}_{args.ds_name}_best")])
 
     
     start_time = time()
@@ -71,7 +71,7 @@ def run(args):
 if __name__ == "__main__":
     
     # Initialize Argument Parser    
-    parser = argparse.ArgumentParser(description = 'Image Classification Training Arguments')
+    parser = argparse.ArgumentParser(description = "Image Classification Training Arguments")
     
     # Add arguments to the parser
     parser.add_argument("-r", "--ds_name", type = str, default = 'mri', help = "Dataset name for training")
