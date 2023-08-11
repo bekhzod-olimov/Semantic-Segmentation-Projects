@@ -163,8 +163,9 @@ class ImagePredictionLogger(Callback):
             preds = [(torch.sigmoid(pred_mask) > 0.5).float() for pred_mask in pred_masks]
         else: pred_masks = pl_module(val_imgs).pred_masks.squeeze().float()
         # Log the images as wandb Image
+        # Visualize original images, ground truth masks and generated masks
         trainer.logger.experiment.log({
-            "Input Images": [wandb.Image(x, caption="Input image") for x in val_imgs[:self.num_samples]], 
-            "Ground Truth": [wandb.Image(y, caption="Ground Truth") for y in val_masks[:self.num_samples]],
+            "Input Images": [wandb.Image(x, caption = "Input image") for x in val_imgs[:self.num_samples]], 
+            "Ground Truth": [wandb.Image(y, caption = "Ground Truth") for y in val_masks[:self.num_samples]],
             "Generated Masks": [wandb.Image(pred_mask, caption="Generated Mask") for pred_mask in preds[:self.num_samples]]
              })
