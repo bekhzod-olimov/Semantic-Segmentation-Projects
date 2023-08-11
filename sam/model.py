@@ -57,6 +57,7 @@ class LitModel(pl.LightningModule):
         
         # Get images and their corresponding labels
         im, gt, bboxes = batch["pixel_values"], batch["ground_truth_mask"].float(), batch["input_boxes"]
+        # Get the prediction mask using the model
         pred_mask = self.model(pixel_values = im, input_boxes = bboxes, multimask_output = False)
         
         if self.ds_name in ["mri", "isic"]:
@@ -64,6 +65,7 @@ class LitModel(pl.LightningModule):
             gt = gt.unsqueeze(1)
         
         else: pred_mask = pred_mask.pred_masks.squeeze(1).squeeze(1)
+        # Compute the loss value
         loss = self.loss_fn(pred_mask, gt)
         
         # Logs
@@ -90,6 +92,7 @@ class LitModel(pl.LightningModule):
         
         # Get images and their corresponding labels
         im, gt, bboxes = batch["pixel_values"], batch["ground_truth_mask"].float(), batch["input_boxes"]
+        # Get the prediction mask using the model
         pred_mask = self.model(pixel_values = im, input_boxes = bboxes, multimask_output = False)
         
         if self.ds_name in ["mri", "isic"]:
@@ -97,6 +100,7 @@ class LitModel(pl.LightningModule):
             gt = gt.unsqueeze(1)
         
         else: pred_mask = pred_mask.pred_masks.squeeze(1).squeeze(1)
+        # Compute the loss value
         loss = self.loss_fn(pred_mask, gt)
         
         # Logs
