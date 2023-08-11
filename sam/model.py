@@ -16,11 +16,14 @@ class LitModel(pl.LightningModule):
         
         # Log hyperparameters
         self.save_hyperparameters()
+        # Get class parameter arguments
         self.lr, self.ds_name = lr, ds_name
+        # Set the loss function
         # self.loss_fn = nn.CrossEntropyLoss()
         self.loss_fn = monai.losses.DiceCELoss(sigmoid=True, squared_pred=True, reduction='mean')
         # Get model to be trained
         self.model = get_model()
+        # Set the lists to track train and validation times
         self.train_times, self.validation_times = [], []
 
     # Get optimizere to update trainable parameters
