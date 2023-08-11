@@ -129,19 +129,32 @@ class ImagePredictionLogger(Callback):
         ds_name          - dataset name, str;
         cls_names        - class names in the dataset, list;
         num_samples      - number of samples to be visualized, int.
-        
     
     """
     
-    def __init__(self, val_samples, ds_name, cls_names=None, num_samples = 8):
+    def __init__(self, val_samples, ds_name, cls_names = None, num_samples = 8):
         super().__init__()
+        # Get the class parameter arguments
         self.num_samples, self.ds_name = num_samples, ds_name
+        # Get the images and their corresponding masks
         self.val_imgs, self.val_masks = val_samples["pixel_values"], val_samples["ground_truth_mask"]
         
     def on_validation_epoch_end(self, trainer, pl_module):
-        # Bring the tensors to CPU
-        val_imgs = self.val_imgs.to(device=pl_module.device)
-        val_masks = self.val_masks.to(device=pl_module.device).float()
+
+        """
+
+        This function gets several parameters and visualizes images, gts, and generated masks.
+
+        Parameters:
+        
+            trainer        - trainer object, pytorch lightning trainer object;
+            pl_module      - model used to generate masks, pytorch lightining model object.
+        
+        """
+        
+        # Move the tensors to device
+        val_imgs = self.val_imgs.to(device = pl_module.device)
+        val_masks = self.val_masks.to(device = pl_module.device).float()
         # val_masks = self.val_masks.to(device=pl_module.device)
         # Get model prediction
         if self.ds_name in ["mri", "isic"]:
