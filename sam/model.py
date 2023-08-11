@@ -1,9 +1,7 @@
+# Import libraries
 import os, torch, torchmetrics, timm, wandb, pytorch_lightning as pl, numpy as np, monai
-from torch import nn
-from torch.nn import functional as F
-from pytorch_lightning.callbacks import Callback
-from time import time
-from utils import get_model, tensor2im
+from torch import nn; from torch.nn import functional as F; from time import time
+from pytorch_lightning.callbacks import Callback; from utils import get_model, tensor2im
 
 class LitModel(pl.LightningModule):
     
