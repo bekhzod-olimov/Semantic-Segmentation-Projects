@@ -103,11 +103,14 @@ class LitModel(pl.LightningModule):
         self.log("valid_loss", loss, on_step = False, on_epoch = True, logger = True); 
         
         return loss
-    
+
+    # Set the validation process start time
     def on_validation_epoch_start(self): self.validation_start_time = time()
     
+    # Compute one epoch validation time
     def on_validation_epoch_end(self): self.validation_elapsed_time = time() - self.validation_start_time; self.validation_times.append(self.validation_elapsed_time); self.log("valid_time", self.validation_elapsed_time, prog_bar = True, on_step = False, on_epoch = True, logger = True)
-    
+
+    # Get the model train and validation times
     def get_stats(self): return self.train_times, self.validation_times
     
 class ImagePredictionLogger(Callback):
