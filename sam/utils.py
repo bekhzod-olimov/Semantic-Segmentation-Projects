@@ -1,12 +1,9 @@
-from collections import OrderedDict as OD
-from transformers import SamModel
+# Import libraries
 import torch, numpy as np, torch.nn.functional as F, random
-from time import time
-from glob import glob
 from torchvision import transforms as T
-from tqdm import tqdm
-from matplotlib import pyplot as plt
-
+from transformers import SamModel; from collections import OrderedDict as OD
+from time import time; from glob import glob
+from tqdm import tqdm; from matplotlib import pyplot as plt
 
 def tensor2im(t, im_type = "rgb"): 
     
