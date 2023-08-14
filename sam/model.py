@@ -155,7 +155,7 @@ class ImagePredictionLogger(Callback):
         # Move the tensors to device
         val_imgs = self.val_imgs.to(device = pl_module.device)
         val_masks = self.val_masks.to(device = pl_module.device).float()
-        # val_masks = self.val_masks.to(device=pl_module.device)
+        # val_masks = self.val_masks.to(device = pl_module.device)
         # Get model prediction
         if self.ds_name in ["mri", "isic"]:
             # pred_masks = (torch.sigmoid(pl_module(val_imgs).pred_masks.squeeze()) > 0.5).float()
