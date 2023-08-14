@@ -31,31 +31,39 @@ def get_bounding_box(ground_truth_map):
     
     """
     
-    This function creates varying bounding box coordinates based on the segmentation contours as prompt for the SAM model
-    The padding is random int values between 5 and 20 pixels
+    This function creates varying bounding box coordinates 
+    based on the segmentation contours as prompt for the SAM model.
     
     """
-    
+
+    # Make sure the gt map does not have negative values
     ground_truth_map[ground_truth_map < 0] = 1
+    
     if len(np.unique(ground_truth_map)) > 1:
         
-        # get bounding box from mask
+        # Get bounding box from the mask
         y_indices, x_indices = np.where(ground_truth_map > 0)
+        # Get x coordinates
         x_min, x_max = np.min(x_indices), np.max(x_indices)
+        # Get y coordinates
         y_min, y_max = np.min(y_indices), np.max(y_indices)
         
-        # add perturbation to bounding box coordinates
+        # Add perturbation to bounding box coordinates
+        # Get height and width of the image
         H, W = ground_truth_map.shape
+        # Get the min and max values
         x_min = max(0, x_min - np.random.randint(5, 20))
         x_max = min(W, x_max + np.random.randint(5, 20))
         y_min = max(0, y_min - np.random.randint(5, 20))
         y_max = min(H, y_max + np.random.randint(5, 20))
-        
+
+        # Set the bounding box as list
         bbox = [x_min, y_min, x_max, y_max]
 
         return bbox
-    
-    else: return [0, 0, 256, 256] # if there is no mask in the array, set bbox to image size
+        
+    # If there is no mask in the array, set bbox to image size
+    else: return [0, 0, 256, 256] 
 
 def get_state_dict(checkpoint_path):
     
