@@ -14,14 +14,18 @@ def tensor2im(t, im_type = "rgb"):
     Parameters:
 
         t        - input tensor variable, tensor;
-        im_type  - image type, str.        
+        im_type  - image type, str.     
+
+    Output:
+
+        im       - converted image, array.
     
     """
     
+    # Set the transformations to be applied
     rgb_tfs = T.Compose([T.Normalize(mean = [ 0., 0., 0. ], std = [ 1/0.229, 1/0.224, 1/0.225 ]), T.Normalize(mean = [ -0.485, -0.456, -0.406 ], std = [ 1., 1., 1. ])])
     
     return ((rgb_tfs(t))*255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if im_type == "rgb" else ((t)*255).detach().cpu().numpy().astype(np.uint8)
-
 
 def get_bounding_box(ground_truth_map):
     '''
