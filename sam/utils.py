@@ -6,6 +6,17 @@ from time import time; from glob import glob
 from tqdm import tqdm; from matplotlib import pyplot as plt
 
 def tensor2im(t, im_type = "rgb"): 
+
+    """
+
+    This function gets several parameters and converts tensor data type into numpy array.
+
+    Parameters:
+
+        t        - input tensor variable, tensor;
+        im_type  - image type, str.        
+    
+    """
     
     rgb_tfs = T.Compose([T.Normalize(mean = [ 0., 0., 0. ], std = [ 1/0.229, 1/0.224, 1/0.225 ]), T.Normalize(mean = [ -0.485, -0.456, -0.406 ], std = [ 1., 1., 1. ])])
     
