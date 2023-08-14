@@ -15,20 +15,27 @@ def tensor2im(t, im_type = "rgb"):
 
         t        - input tensor variable, tensor;
         im_type  - image type, str.        
+
+    Output:
+
+        im       - converted image, array.
     
     """
-    
+
+    # Set the transformations to be applied
     rgb_tfs = T.Compose([T.Normalize(mean = [ 0., 0., 0. ], std = [ 1/0.229, 1/0.224, 1/0.225 ]), T.Normalize(mean = [ -0.485, -0.456, -0.406 ], std = [ 1., 1., 1. ])])
     
     return ((rgb_tfs(t))*255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if im_type == "rgb" else ((t)*255).detach().cpu().numpy().astype(np.uint8)
 
-
 def get_bounding_box(ground_truth_map):
-    '''
+    
+    """
+    
     This function creates varying bounding box coordinates based on the segmentation contours as prompt for the SAM model
     The padding is random int values between 5 and 20 pixels
-    '''
-
+    
+    """
+    
     ground_truth_map[ground_truth_map < 0] = 1
     if len(np.unique(ground_truth_map)) > 1:
         
