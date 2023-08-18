@@ -1,5 +1,5 @@
 # Import libraries
-import torch, numpy as np, torch.nn.functional as F, random
+import torch, random, numpy as np, torch.nn.functional as F
 from torchvision import transforms as T
 from transformers import SamModel; from collections import OrderedDict as OD
 from time import time; from glob import glob
@@ -33,7 +33,15 @@ def get_bounding_box(ground_truth_map):
     
     This function creates varying bounding box coordinates 
     based on the segmentation contours as prompt for the SAM model.
-    
+
+    Parameter:
+
+        ground_truth_map        - ground truth map to get bounding box, tensor.    
+
+    Output:
+
+        bbox                   - bounding box, tensor.
+        
     """
 
     # Make sure the gt map does not have negative values
