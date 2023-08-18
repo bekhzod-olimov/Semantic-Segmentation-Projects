@@ -82,19 +82,25 @@ def get_state_dict(checkpoint_path):
 
     Parameter:
 
-        checkpoint_path        - path to the checkpoint with a trained model, str;
+        checkpoint_path        - path to the checkpoint with a trained model, str.
 
     Output:
 
-        
+        new_state_dict         - a new state dictionary where "model." removed from the keys, dict.
     
     """
     
+    # Load the checkpoint from the path
     checkpoint = torch.load(checkpoint_path)
+    # Create a new dictionary
     new_state_dict = OD()
+    # Go through the each dictionary key and values 
     for k, v in checkpoint["state_dict"].items():
-        name = k.replace("model.", "") # remove `model.`
+        # Remove "model." string
+        name = k.replace("model.", "")
+        # Set the new key and the value
         new_state_dict[name] = v
+    
     return new_state_dict
 
 def tn2np(t, inv_fn = None): return (inv_fn(t) * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if inv_fn is not None else (t * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8)
