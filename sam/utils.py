@@ -103,9 +103,21 @@ def get_state_dict(checkpoint_path):
     
     return new_state_dict
 
+# Function to convert tensor to numpy array
 def tn2np(t, inv_fn = None): return (inv_fn(t) * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8) if inv_fn is not None else (t * 255).detach().cpu().permute(1,2,0).numpy().astype(np.uint8)
 
 def get_preds(model, test_dl, device, ds_name, num_bs = 10):
+
+    """
+    
+    This function gets several parameters and returns necessary metadata for the inference process.
+
+    Parameters:
+
+        
+    
+    """
+    
     print("Start inference...")
     
     all_ims, all_preds, all_gts, acc = [], [], [], 0
