@@ -47,6 +47,7 @@ def get_bounding_box(ground_truth_map):
     # Make sure the gt map does not have negative values
     ground_truth_map[ground_truth_map < 0] = 1
     
+    # Get the bounding box when the gt map has more than 1 unique values
     if len(np.unique(ground_truth_map)) > 1:
         
         # Get bounding box from the mask
@@ -74,6 +75,20 @@ def get_bounding_box(ground_truth_map):
     else: return [0, 0, 256, 256] 
 
 def get_state_dict(checkpoint_path):
+
+    """
+
+    This function gets a path to the checkpoint and returns a new state dictionary.
+
+    Parameter:
+
+        checkpoint_path        - path to the checkpoint with a trained model, str;
+
+    Output:
+
+        
+    
+    """
     
     checkpoint = torch.load(checkpoint_path)
     new_state_dict = OD()
