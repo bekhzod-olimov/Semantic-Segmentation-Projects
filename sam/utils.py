@@ -116,7 +116,13 @@ def get_preds(model, test_dl, device, ds_name, num_bs = 10):
 
         model            -  a trained model, torch model object;
         test_dl          - test dataloader, torch dataloader object;
-        device           - device type, str, ds_name, num_bs
+        device           - device type, str;
+        ds_name          - name of the dataset, str;
+        num_bs           - number of batches to be inferenced, int.
+
+    Outputs:
+
+        all_ims, all_preds, all_gts
     
     """
     
