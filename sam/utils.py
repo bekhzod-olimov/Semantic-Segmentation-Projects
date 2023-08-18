@@ -122,7 +122,9 @@ def get_preds(model, test_dl, device, ds_name, num_bs = 10):
 
     Outputs:
 
-        all_ims, all_preds, all_gts
+        all_ims         - all images in the batches, tensor;
+        all_preds       - all predictions of the images in the batches, tensor;
+        all_gts         - all gt labels of the images in the batches, tensor.
     
     """
     
