@@ -196,25 +196,41 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name, 
         im = all_ims[ind]; gt = all_gts[ind]
         # Get the predicted mask
         pr = all_preds[ind] if ds_name in ["cell", "isic", "mri"] else all_preds[ind].permute(1, 2, 0)
-        
+
+        # The first plot
         plt.subplot(num_ims, 3, count)
+        # Show the image
         plt.imshow(tn2np(im.squeeze(0), inv_fn = inv_fn), cmap = cmap)
+        # Turn of the axis
         plt.axis("off")
+        # Set the title
         plt.title("An Input Image")
-        count += 1
-        
-        plt.subplot(num_ims, 3, count)
-        plt.imshow(tn2np(gt.unsqueeze(0)), cmap = cmap)
-        plt.axis("off")
-        plt.title("GT Mask")
+        # Add a count value
         count += 1
 
+        # The second plot
         plt.subplot(num_ims, 3, count)
-        plt.imshow(tensor2im((torch.sigmoid(pr) > 0.5), im_type = "gray").squeeze(0), cmap = cmap)
+        # Show the image
+        plt.imshow(tn2np(gt.unsqueeze(0)), cmap = cmap)
+        # Turn off the axis
         plt.axis("off")
+        # Set the title
+        plt.title("GT Mask")
+        # Add a count value
+        count += 1
+
+        # The third plot
+        plt.subplot(num_ims, 3, count)
+        # Show the image
+        plt.imshow(tensor2im((torch.sigmoid(pr) > 0.5), im_type = "gray").squeeze(0), cmap = cmap)
+        # Turn off the axis
+        plt.axis("off")
+        # Set the title
         plt.title("Generated Mask")
+        # Add a count value
         count += 1
     
+    # Save the figure
     plt.savefig(f"{save_path}/{save_name}_preds.png")
     print(f"The visualization can be seen in {save_path} directory.")
 
