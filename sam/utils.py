@@ -166,10 +166,12 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name, 
         all_gts            - ground truth masks to be visualized, list;
         num_ims            - number of images to be visualized, int;
         rows               - number of rows in the plot, int;
-        save_path, save_name, cmap, ds_name
+        save_path          - path to save the visualization results, str;
+        save_name          - name to save the plot, str;
+        cmap               - colormap type, str;
+        ds_name            - dataset name, str.
     
     """
-    
     
     saved_ims = sorted(glob(f"{save_path}/*.png"))
     if os.path.isfile(f"{save_path}/{save_name}_preds.png")
