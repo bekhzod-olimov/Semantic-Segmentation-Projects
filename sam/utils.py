@@ -156,6 +156,20 @@ def get_preds(model, test_dl, device, ds_name, num_bs = 10):
     return all_ims, all_preds, all_gts
 
 def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name, cmap, ds_name):
+
+    """
+
+    This function gets several parameters and visualizes the inference results.
+
+        all_ims            - images to be visualized, list;
+        all_preds          - predicted masks to be visualized, list;
+        all_gts            - ground truth masks to be visualized, list;
+        num_ims            - number of images to be visualized, int;
+        rows               - number of rows in the plot, int;
+        save_path, save_name, cmap, ds_name
+    
+    """
+    
     
     saved_ims = sorted(glob(f"{save_path}/*.png"))
     if os.path.isfile(f"{save_path}/{save_name}_preds.png")
