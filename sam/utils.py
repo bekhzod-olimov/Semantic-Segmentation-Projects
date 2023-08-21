@@ -173,22 +173,28 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name, 
     
     """
     
+    # Get all the saved images from the given path
     saved_ims = sorted(glob(f"{save_path}/*.png"))
-    if os.path.isfile(f"{save_path}/{save_name}_preds.png")
-    print("Start visualization...")
-    plt.figure(figsize = (10, 18))
-    indices = [random.randint(0, len(all_ims) - 1) for _ in range(num_ims)]
-    count = 1
-    inv_fn = T.Compose([ T.Normalize(mean = [ 0., 0., 0. ],
-                                                     std = [ 1/0.229, 1/0.224, 1/0.225 ]),
-                                              T.Normalize(mean = [ -0.485, -0.456, -0.406 ],
-                                                     std = [ 1., 1., 1. ]),
-                                           ])
+    # Pass if the predictions are already saved
+    if os.path.isfile(f"{save_path}/{save_name}_preds.png"): pass
     
+    print("Start visualization...")
+    # Set the figure size
+    plt.figure(figsize = (10, 18))
+    # Get the random indices
+    indices = [random.randint(0, len(all_ims) - 1) for _ in range(num_ims)]
+    # Set the cound
+    count = 1
+    # Set the inverse transformations 
+    inv_fn = T.Compose([ T.Normalize(mean = [ 0., 0., 0. ], std = [ 1/0.229, 1/0.224, 1/0.225 ]),
+                         T.Normalize(mean = [ -0.485, -0.456, -0.406 ], std = [ 1., 1., 1. ]) ])
+    
+    # Go through every index in the random indices
     for idx, ind in enumerate(indices):
-        
-        im = all_ims[ind]
-        gt = all_gts[ind]
+
+        # Get the image and gt
+        im = all_ims[ind]; gt = all_gts[ind]
+        # Get the predicted mask
         pr = all_preds[ind] if ds_name in ["cell", "isic", "mri"] else all_preds[ind].permute(1, 2, 0)
         
         plt.subplot(num_ims, 3, count)
