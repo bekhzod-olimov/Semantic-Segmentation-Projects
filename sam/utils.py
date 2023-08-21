@@ -129,16 +129,26 @@ def get_preds(model, test_dl, device, ds_name, num_bs = 10):
     """
     
     print("Start inference...")
-    
+
+    # Set the lists to save information
     all_ims, all_preds, all_gts, acc = [], [], [], 0
+    # Initialize the loss function
     loss_fn = torch.nn.CrossEntropyLoss()
+    # Set the start time
     start_time = time()
+    # Go through every batch in the test dataloader
     for idx, batch in tqdm(enumerate(test_dl)):
+        # If the batch index hits the number of batches variable value break the loop
         if idx == num_bs: break
+        # Get the images, gts, and bounding boxes from the batch
         ims, gts, bboxes = batch["pixel_values"], batch["ground_truth_mask"], batch["input_boxes"].to(device)
+        # Add the images and gts to the lists
         all_ims.extend(ims); all_gts.extend(gts);        
+        # Get the predicted masks based on the images and bounding boxes
         pred_masks = model(pixel_values = ims.to(device), input_boxes = bboxes, multimask_output = False)
+        # Get predicted masks
         preds = pred_masks.pred_masks.squeeze() if "cell" in ds_name else pred_masks.pred_masks.squeeze(1)
+        # Add the predicted masks to the list
         all_preds.extend(preds)
         
     print(f"Inference is completed in {(time() - start_time):.3f} secs!")
