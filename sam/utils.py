@@ -252,21 +252,32 @@ class Metrics():
     
     def __init__(self, pred, gt, loss_fn, eps = 1e-10, n_cls = 2):
         
+        # Get predicted gt masks
         self.pred, self.gt = torch.argmax(F.softmax(pred, dim=1), dim = 1), gt 
+        # Get the value of the parameters
         self.loss_fn, self.eps, self.n_cls, self.pred_ = loss_fn, eps, n_cls, pred
         
+    # Function to convert tensor to contiguous tensor
     def to_contiguous(self, inp): return inp.contiguous().view(-1)
     
     def PA(self):
 
+        """
+
+        This function computes pixel accuracy evaluation metric score.
+        
+        """
+
         with torch.no_grad():
             # print(self.gt.shape)
             # print(self.pred.shape)
-            
+
+            # If the shapes do not match
             if self.gt.shape != self.pred.shape: self.pred = self.pred_
             # print(self.gt.shape)
             # print(self.pred.shape)
-            
+
+            # Get the number of matching pixels
             match = torch.eq(self.pred, self.gt).int() 
         
         return float(match.sum()) / float(match.numel())
