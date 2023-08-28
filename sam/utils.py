@@ -235,6 +235,20 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name, 
     print(f"The visualization can be seen in {save_path} directory.")
 
 class Metrics():
+
+    """
+
+    This class gets several parameters and calculates evaluation metrics.
+
+    Parameters:
+
+        pred        - predicted mask from the model, tensor;
+        gt          - ground truth mask, tensor;
+        loss_fn     - loss function, torch loss object;
+        eps         - epsilon value, float;
+        n_cls       - number of classes in the dataset, int.
+    
+    """
     
     def __init__(self, pred, gt, loss_fn, eps = 1e-10, n_cls = 2):
         
