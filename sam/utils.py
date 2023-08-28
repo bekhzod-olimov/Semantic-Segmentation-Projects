@@ -317,15 +317,22 @@ class Metrics():
             # Return the mIoU value                    
             return np.nanmean(iou_per_class)
 
+    # Function to compute loss value
     def loss(self): return self.loss_fn(self.pred_, self.gt)
 
 def get_model():
+
+    """
+
+    This function initializes SAM model and loads pretrained weights.
     
+    """
+
+    # Initialize the model
     model = SamModel.from_pretrained("facebook/sam-vit-base")
-    
+
+    # Turn off gradient calculation for a particular layers
     for name, param in model.named_parameters():
-        if name.startswith("vision_encoder") or name.startswith("prompt_encoder"):
-            param.requires_grad_(False)
+        if name.startswith("vision_encoder") or name.startswith("prompt_encoder"): param.requires_grad_(False)
     
     return model
-
