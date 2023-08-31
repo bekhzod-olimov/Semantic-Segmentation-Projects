@@ -139,6 +139,17 @@ class UpSampling(nn.Module):
         return self.conv(torch.cat([inp2, inp1], dim = 1))
 
 class FinalConv(nn.Module):
+
+    """
+
+    This class gets several parameters and conducts the final convolution layer of the UNet model.
+
+    Parameters:
+
+        in_chs      - number of channels in the input volume of the convolution layer, int;
+        out_chs     - number of channnels in the output volume from the convolution layer, int.
+    
+    """
     def __init__(self, in_chs, out_chs):
         super().__init__()
         
