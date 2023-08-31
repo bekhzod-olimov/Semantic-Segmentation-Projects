@@ -325,6 +325,10 @@ def get_model():
     """
 
     This function initializes SAM model and loads pretrained weights.
+
+    Output:
+
+        model      - a model to be trained, SamModel object.
     
     """
 
