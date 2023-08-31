@@ -146,8 +146,8 @@ class FinalConv(nn.Module):
 
     Parameters:
 
-        in_chs      - number of channels in the input volume of the convolution layer, int;
-        out_chs     - number of channnels in the output volume from the convolution layer, int.
+        in_chs      - number of channels of the input volume, int;
+        out_chs     - number of channels of the output volume, int.
     
     """
     
@@ -160,6 +160,19 @@ class FinalConv(nn.Module):
     def forward(self, inp): return self.conv(inp)
 
 class UNet(nn.Module):
+
+    """
+
+    This class get several parameters and formulates UNet model.
+
+    Parameters:
+
+        in_chs      - number of channels of the input volume, int;
+        out_chs     - number of channels of the output volume, int;
+        n_cls       - number of classes in the dataset, int;
+        depth, up_method
+    
+    """
     
     def __init__(self, in_chs, n_cls, out_chs, depth, up_method):
         super().__init__()
