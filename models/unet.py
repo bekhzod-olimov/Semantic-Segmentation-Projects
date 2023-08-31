@@ -150,11 +150,13 @@ class FinalConv(nn.Module):
         out_chs     - number of channnels in the output volume from the convolution layer, int.
     
     """
+    
     def __init__(self, in_chs, out_chs):
-        super().__init__()
-        
-        self.conv = nn.Conv2d(in_chs, out_chs, kernel_size = 1)
+        super().__init__() 
+        # Initialize the convolution layer
+        self.conv = nn.Conv2d(in_channels = in_chs, out_channels = out_chs, kernel_size = 1)
 
+    # Feed forward of the class
     def forward(self, inp): return self.conv(inp)
 
 class UNet(nn.Module):
