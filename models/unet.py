@@ -170,7 +170,8 @@ class UNet(nn.Module):
         in_chs      - number of channels of the input volume, int;
         out_chs     - number of channels of the output volume, int;
         n_cls       - number of classes in the dataset, int;
-        depth, up_method
+        depth       - depth of the UNet model;
+        up_method   - upsampling method in the decoder part of the UNet, str.
     
     """
     
