@@ -178,21 +178,29 @@ class UNet(nn.Module):
     def __init__(self, in_chs, n_cls, out_chs, depth, up_method):
         super().__init__()
         
-        assert up_method in ['bilinear', 'nearest', 'tr_conv'], "Please choose a proper method for upsampling"
+        assert up_method in ["bilinear", "nearest", "tr_conv"], "Please choose a proper method for upsampling"
+        # Get the arguments of the parameters
         self.depth = depth
+        # Initialize the first convolution block
         self.init_block = UNetBlock(in_chs, out_chs)
-        factor = 2 if up_method in ['bilinear', 'nearest'] else 1 
-        
+        # Set the factor for upsampling
+        factor = 2 if up_method in ["bilinear", "nearest"] else 1 
+
+        # Initialize lists for the encoder and decoder
         encoder, decoder = [], []
-        
+
+        # Go through the number of depths
         for idx, (enc, dec) in enumerate(zip(range(depth), reversed(range(depth)))):
             
+            # Get the number of encoder input channels
             enc_in_chs = out_chs * 2 ** enc # 64, 128; 128,256; 256,512; 512,512
-            
-            enc_out_chs = 2 * out_chs * 2 ** (enc - 1) if (idx == (depth - 1) and up_method in ['bilinear', 'nearest']) else 2 * out_chs * 2 ** enc
-                
+            # Set the number of encoder output channels
+            enc_out_chs = 2 * out_chs * 2 ** (enc - 1) if (idx == (depth - 1) and up_method in ["bilinear", "nearest"]) else 2 * out_chs * 2 ** enc
+            # Formulate the encoder of the model
             encoder += [DownSampling(enc_in_chs, int(enc_out_chs))]
+            # Get the number of decoder input channels
             dec_in_chs = 2 * out_chs * 2 ** dec if idx == 0 else dec_out_chs
+            # Get the number of decoder output channels
             dec_out_chs = out_chs * 2 ** dec if idx != (depth - 1) else factor * out_chs * 2 ** dec
             decoder += [UpSampling(dec_in_chs, dec_out_chs // factor, up_method)]
         
