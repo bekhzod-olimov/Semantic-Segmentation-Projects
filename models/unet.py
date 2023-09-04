@@ -196,17 +196,19 @@ class UNet(nn.Module):
             enc_in_chs = out_chs * 2 ** enc # 64, 128; 128,256; 256,512; 512,512
             # Set the number of encoder output channels
             enc_out_chs = 2 * out_chs * 2 ** (enc - 1) if (idx == (depth - 1) and up_method in ["bilinear", "nearest"]) else 2 * out_chs * 2 ** enc
-            # Formulate the encoder of the model
+            # Formulate the encoder list of the model
             encoder += [DownSampling(enc_in_chs, int(enc_out_chs))]
             # Get the number of decoder input channels
             dec_in_chs = 2 * out_chs * 2 ** dec if idx == 0 else dec_out_chs
             # Get the number of decoder output channels
             dec_out_chs = out_chs * 2 ** dec if idx != (depth - 1) else factor * out_chs * 2 ** dec
+            # Formulate the decoder list of the model
             decoder += [UpSampling(dec_in_chs, dec_out_chs // factor, up_method)]
         
+        # Formulate encoder and decoder parts of the UNet
         self.encoder = nn.Sequential(*encoder)
         self.decoder = nn.Sequential(*decoder)
-        
+        # Initialize final convolution layer of the UNet
         self.final_conv = FinalConv(out_chs, n_cls)
         # self.out_act = torch.nn.SoftMax() if n_cls > 2 else torch.nn.Sigmoid()
         
