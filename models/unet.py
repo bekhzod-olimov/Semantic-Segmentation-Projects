@@ -213,24 +213,42 @@ class UNet(nn.Module):
         # self.out_act = torch.nn.SoftMax() if n_cls > 2 else torch.nn.Sigmoid()
         
     def forward(self, inp):
+
+        """
+
+        This function gets an input image and conducts feed forward of the UNet.
+
+        Parameter:
+
+            inp    - input volume, tensor.
+
+        Output:
+
+            out    - output volume, tensor.
         
+        """
+        
+        # Get the outputs from the first UNet block
         outputs = [self.init_block(inp)]
-        
+
+        # Get the encoded features
         for idx, block in enumerate(self.encoder):
             out = outputs[idx] if idx == 0 else encoded
             encoded = block(out)
             outputs.append(encoded)
-        
+
+        # Get the decoded features
         for idx, block in enumerate(self.decoder):
             encoded = outputs[self.depth - idx - 1]
             decoded = decoded if idx != 0 else outputs[-(idx + 1)]
             decoded = block(decoded, encoded)
             
+        # Get the final predicted mask
         out = self.final_conv(decoded)
         
-        # return self.out_act(out)
         return out
-    
+        # return self.out_act(out)
+        
 # inp = torch.rand(1,3,224,224)
 # m = UNet(in_chs = 3, n_cls = 2, out_chs = 32, depth = 5, up_method = "tr_conv")
 # m = UNet(in_chs = 3, n_cls = 2, out_chs = 32, depth = 5, up_method = "nearest")
