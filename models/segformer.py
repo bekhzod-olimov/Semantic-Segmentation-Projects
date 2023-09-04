@@ -1,3 +1,4 @@
+# Import libraries
 import torch
 from torch import nn
 from typing import List, Iterable
@@ -5,18 +6,31 @@ from einops import rearrange
 from torchvision.ops import StochasticDepth
 
 class OverlapPatchMerging(nn.Sequential):
+
+    """
+    
+    This class gets several parameters and applues overlap patch merging.
+
+    Parameters:
+
+        in_channels    - number of channels in the input volume, int;
+        out_channels   - number of channels in the output volume from the convolution layer, int;
+        patch_size     - size of the convolution kernel, int;
+        overlap_size   - size of the stride of the convolution operation, int.        
+    
+    """
+    
     def __init__(
         self, in_channels: int, out_channels: int, patch_size: int, overlap_size: int
     ):
         super().__init__(
             nn.Conv2d(
-                in_channels,            # 3
-                out_channels,           # 64 
-                kernel_size=patch_size, # 16
-                stride=overlap_size,    # 16
-                padding=patch_size // 2,# 8
-                bias=False
-            ),
+                in_channels,               # 3
+                out_channels,              # 64 
+                kernel_size = patch_size,  # 16
+                stride = overlap_size,     # 16
+                padding = patch_size // 2, # 8
+                bias = False),
             LayerNorm2d(out_channels)
         )
         
