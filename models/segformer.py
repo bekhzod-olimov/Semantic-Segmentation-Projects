@@ -78,10 +78,25 @@ class SegFormerSegmentationHead(nn.Module):
         self.predict = nn.Conv2d(in_channels = channels, out_channels = num_classes, kernel_size = 1)
 
     def forward(self, features):
-        x = torch.cat(features, dim=1)
+
+        """
+
+        This class gets extracted features and conducts feed-forward of the class.
+
+        Parameter:
+
+            features     - extracted features, tensor.
+
+        Output:
+
+            x            - output of the segmentation head class, tensor.
+        
+        """
+        
+        x = torch.cat(features, dim = 1)
         x = self.fuse(x)
-        x = self.predict(x)
-        return x
+        
+        return self.predict(x)
     
 class ResidualAdd(nn.Module):
     
