@@ -58,14 +58,24 @@ class MixMLP(nn.Sequential):
             nn.Conv2d(in_channels = channels * expansion, out_channels = channels, kernel_size = 1) )
         
 class SegFormerSegmentationHead(nn.Module):
+
+    """
+
+    This class gets several parameters and conducts segmentation head layer operation.
+
+    Parameters:
+
+        channels          - number of channels in the input volume, int;
+        num_classes       - number of classes in the dataset, int;
+        num_features      - number of features to multiply the channels in the convolution layer, int.
+    
+    """
+    
     def __init__(self, channels: int, num_classes: int, num_features: int = 4):
         super().__init__()
-        self.fuse = nn.Sequential(
-            nn.Conv2d(channels * num_features, channels, kernel_size=1, bias=False),
-            nn.ReLU(), # why relu? Who knows
-            nn.BatchNorm2d(channels) # why batchnorm and not layer norm? Idk
-        )
-        self.predict = nn.Conv2d(channels, num_classes, kernel_size=1)
+        self.fuse = nn.Sequential( nn.Conv2d(in_channels = channels * num_features, out_channels = channels,
+                                   kernel_size = 1, bias = False), nn.ReLU(),  nn.BatchNorm2d(channels) )
+        self.predict = nn.Conv2d(in_channels = channels, out_channels = num_classes, kernel_size = 1)
 
     def forward(self, features):
         x = torch.cat(features, dim=1)
