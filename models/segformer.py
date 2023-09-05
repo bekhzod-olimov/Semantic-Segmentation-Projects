@@ -35,22 +35,27 @@ class OverlapPatchMerging(nn.Sequential):
         )
         
 class MixMLP(nn.Sequential):
+
+    """
+    
+    This class gets several parameters and formulates Mix MLP layers.
+
+    Parameters:
+
+        channels          - number of channels in the input volume, int;
+        expansion         - an expansion factor, int.
+    
+    """
+    
     def __init__(self, channels: int, expansion: int = 4):
         super().__init__(
             # dense layer
-            nn.Conv2d(channels, channels, kernel_size=1),
+            nn.Conv2d(in_channels = channels, out_channels = channels, kernel_size = 1),
             # depth wise conv
-            nn.Conv2d(
-                channels,
-                channels * expansion,
-                kernel_size=3,
-                groups=channels,
-                padding=1,
-            ),
-            nn.GELU(),
+            nn.Conv2d(in_channels = channels, out_channels = channels * expansion,
+                      kernel_size = 3, groups = channels, padding = 1 ), nn.GELU(),
             # dense layer
-            nn.Conv2d(channels * expansion, channels, kernel_size=1),
-        )
+            nn.Conv2d(in_channels = channels * expansion, out_channels = channels, kernel_size = 1) )
         
 class SegFormerSegmentationHead(nn.Module):
     def __init__(self, channels: int, num_classes: int, num_features: int = 4):
