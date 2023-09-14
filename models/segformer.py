@@ -1,9 +1,7 @@
 # Import libraries
 import torch
-from torch import nn
-from typing import List, Iterable
-from einops import rearrange
-from torchvision.ops import StochasticDepth
+from torch import nn; from typing import List, Iterable
+from einops import rearrange; from torchvision.ops import StochasticDepth
 
 class OverlapPatchMerging(nn.Sequential):
 
@@ -137,14 +135,22 @@ class ResidualAdd(nn.Module):
         return inp
 
 class SegFormerEncoderBlock(nn.Sequential):
-    def __init__(
-        self,
-        channels: int,
-        reduction_ratio: int = 1,
-        num_heads: int = 8,
-        mlp_expansion: int = 4,
-        drop_path_prob: float = .0
-    ):
+
+    """
+
+    This class creates a SegFormer Encoder Block.
+
+    Parameters:
+
+        channels          - number of channels in the input volume, int;
+        reduction_ratio   - reduction ratio value, int;
+        num_heads         - number of heads in the block, int;
+        mlp_expansion     - multilayer perceptron expansion rate, int;
+        drop_path_prob    - dropout path probability, float.
+    
+    """    
+    
+    def __init__(self, channels: int, reduction_ratio: int = 1, num_heads: int = 8, mlp_expansion: int = 4, drop_path_prob: float = .0 ):
         super().__init__(
             ResidualAdd(
                 nn.Sequential(
