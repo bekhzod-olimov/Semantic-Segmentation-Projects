@@ -99,15 +99,42 @@ class SegFormerSegmentationHead(nn.Module):
         return self.predict(x)
     
 class ResidualAdd(nn.Module):
+
+    """
+
+    This class get a function and performs residual addition operation.
+
+    Parameter:
+
+        fn         - function, torch object.
+    
+    """
     
     def __init__(self, fn):
         super().__init__()
+        # Get the function
         self.fn = fn
 
-    def forward(self, x, **kwargs):
-        out = self.fn(x, **kwargs)
-        x = x + out
-        return x
+    def forward(self, inp, **kwargs):
+
+        """
+        
+        This function gets an input and conducts feed forward of the residual addition operation.
+
+        Parameter:
+
+            inp    - input to the function, tensor.
+
+        Output:
+
+            inp    - output of the function, tensor.            
+        
+        """
+        
+        out = self.fn(inp, **kwargs)
+        inp = inp + out
+        
+        return inp
 
 class SegFormerEncoderBlock(nn.Sequential):
     def __init__(
