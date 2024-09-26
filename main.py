@@ -3,9 +3,8 @@ import torch, wandb, argparse, yaml, os, pickle, pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint, Callback
-from datasets import get_dl
+from datasets import get_dl; from time import time
 from transformations import get_transformations
-from time import time
 from model import LitModel, ImagePredictionLogger
 
 def run(args):
@@ -76,7 +75,7 @@ def run(args):
 if __name__ == "__main__":
     
     # Initialize Argument Parser    
-    parser = argparse.ArgumentParser(description = "Semantic Segmentation Train Arguments")
+    parser = argparse.ArgumentParser(description = "Semantic Segmentation Training Process Arguments")
     
     # Add arguments to the parser
     parser.add_argument("-bs", "--batch_size", type = int, default = 8, help = "Mini-batch size")
