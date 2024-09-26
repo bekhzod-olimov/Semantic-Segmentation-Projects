@@ -43,13 +43,13 @@ def get_preds(model, test_dl, device):
     
     This function gets several parameters and generates segmentation masks using the trained model.
 
-    Parameter:
+    Parameters:
 
         model       - a trained model, torch model object;
         test_dl     - test dataloader, torch dataloader object;
         device      - gpu device name, str.
 
-    Output:
+    Outputs:
 
         all_ims    - all images in the test dataloader;
         all_preds  - all predicted masks using the trained model;
@@ -58,9 +58,12 @@ def get_preds(model, test_dl, device):
     """
     
     print("Start inference...")
-    
+
+    # Set variables
     all_ims, all_preds, all_gts, acc = [], [], [], 0
+    # Intialize loss function
     loss_fn = torch.nn.CrossEntropyLoss()
+    # Set the start time
     start_time = time()
     for idx, batch in tqdm(enumerate(test_dl)):
         if idx == 10: break
@@ -71,13 +74,28 @@ def get_preds(model, test_dl, device):
         met = Metrics(preds, gts.to(device), loss_fn)
         acc += met.mIoU().item()
         all_preds.extend(preds)
-        
     print(f"Inference is completed in {(time() - start_time):.3f} secs!")
     print(f"Mean Intersection over Union of the model is {acc / len(test_dl.dataset):.3f}")
     
     return all_ims, all_preds, all_gts
     
 def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name):
+
+    """
+    
+    This function gets several arguments and visualizes results.
+
+    Parameters:
+
+        all_ims    - all images in the test dataloader;
+        all_preds  - all predicted masks using the trained model;
+        all_gts    - all ground truth masks in the test dataloader.
+
+    Outputs:
+
+        .
+    
+    """
     
     print("Start visualization...")
     plt.figure(figsize = (5, 18))
