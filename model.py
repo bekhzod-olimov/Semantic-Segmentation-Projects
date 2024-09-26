@@ -1,12 +1,9 @@
 # Import libraries
 import torch, torchmetrics, timm, wandb, pytorch_lightning as pl, os
-from torch import nn
-from torch.nn import functional as F
+from torch import nn; from torch.nn import functional as F
 from pytorch_lightning.callbacks import Callback
-from time import time
-from metrics import Metrics
-from models.unet import UNet
-from models.segformer import SegFormer
+from time import time; from metrics import Metrics
+from models.unet import UNet; from models.segformer import SegFormer
 from models.params import get_params
 
 class LitModel(pl.LightningModule):
