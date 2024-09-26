@@ -3,10 +3,9 @@ import torch, torchvision, os, cv2, albumentations as A
 from torch.utils.data import random_split, Dataset, DataLoader
 from torchvision import transforms as tfs
 from transformations import get_transformations
-from glob import glob
-from PIL import ImageFile
+from glob import glob; from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-torch.manual_seed(2023)
+torch.manual_seed(2024)
 
 class CustomSegmentationDataset(Dataset):
 
