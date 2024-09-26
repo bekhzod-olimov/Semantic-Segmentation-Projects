@@ -89,7 +89,11 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name):
 
         all_ims    - all images in the test dataloader;
         all_preds  - all predicted masks using the trained model;
-        all_gts    - all ground truth masks in the test dataloader.
+        all_gts    - all ground truth masks in the test dataloader;
+        num_ims    - number of images to be visualized, int;
+        rows       - number of rows to be visualized, int;
+        save_path  - path to save the visualization, str;
+        save_name  - filename to save the visualization, str. 
 
     Outputs:
 
@@ -108,7 +112,6 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name):
         im = all_ims[ind]
         gt = all_gts[ind]
         pr = all_preds[ind]
-        # print(torch.unique(pr))
         
         plt.subplot(num_ims, 3, count)
         plt.imshow(tn2np(im.squeeze(0)))
