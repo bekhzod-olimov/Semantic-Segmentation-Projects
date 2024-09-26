@@ -1,9 +1,8 @@
 # Import libraries
 import torch, yaml, os, pickle, timm, argparse
-from models.unet import UNet
-from models.segformer import SegFormer
-from utils import get_state_dict, get_preds, visualize
+from models.unet import UNet; from models.segformer import SegFormer
 from models.params import get_params
+from utils import get_state_dict, get_preds, visualize
 
 def run(args):
     
