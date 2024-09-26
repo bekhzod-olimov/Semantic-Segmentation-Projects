@@ -95,15 +95,18 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name):
         save_path  - path to save the visualization, str;
         save_name  - filename to save the visualization, str. 
 
-    Outputs:
+    Output:
 
-        .
+        saved visualization images.
     
     """
     
     print("Start visualization...")
+    # Set the figure
     plt.figure(figsize = (5, 18))
+    # Get random indices
     indices = [random.randint(0, len(all_ims) - 1) for _ in range(num_ims)]
+    # Set count and threshold
     count = 1
     threshold = -1 if "drone" in save_name else 0.5
     
@@ -112,19 +115,22 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name):
         im = all_ims[ind]
         gt = all_gts[ind]
         pr = all_preds[ind]
-        
+
+        # Subplot #1
         plt.subplot(num_ims, 3, count)
         plt.imshow(tn2np(im.squeeze(0)))
         plt.axis("off")
         plt.title("An Input Image")
         count += 1
-        
+
+        # Subplot #2
         plt.subplot(num_ims, 3, count)
         plt.imshow(tn2np(gt.unsqueeze(0)), cmap = "gray")
         plt.axis("off")
         plt.title("GT Mask")
         count += 1
-
+        
+        # Subplot #3
         plt.subplot(num_ims, 3, count)
         plt.imshow(tn2np((pr > threshold).squeeze(0))[:, : , 1], cmap = "gray")
         plt.axis("off")
@@ -133,8 +139,3 @@ def visualize(all_ims, all_preds, all_gts, num_ims, rows, save_path, save_name):
     
     plt.savefig(f"{save_path}/{save_name}_preds.png")
     print(f"The visualization can be seen in {save_path} directory.")
-    
-    
-    
-    
-    
